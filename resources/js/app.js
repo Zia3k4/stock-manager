@@ -1,20 +1,27 @@
+import '../css/app.css';
 import './bootstrap';
-// dar uma olhada aqui depois
 
-import { createApp } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router';
-import App from './App.vue';
+import { createInertiaApp } from '@inertiajs/vue3';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { createApp, h } from 'vue';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
-const routes = [
-    { path: '/', component: () => import('./pages/Dashboard.vue') },
-    { path: '/produtos', component: () => import('./pages/Produtos.vue') }
-];
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-const router = createRouter({
-    history: createWebHistory(),
-    routes
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/${name}.vue`,
+            import.meta.glob('./Pages/**/*.vue'),
+        ),
+    setup({ el, App, props, plugin }) {
+        return createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .use(ZiggyVue)
+            .mount(el);
+    },
+    progress: {
+        color: '#4B5563',
+    },
 });
-
-const app = createApp(App);
-app.use(router);
-app.mount('#app');

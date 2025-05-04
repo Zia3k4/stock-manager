@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use PhpParser\Builder\Class_;
+use Spatie\Permission\Traits\HasRoles;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -45,4 +47,28 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    use HasRoles;
 }
+class Gate extends User
+{
+    public function setupRolesAndPermissions()
+    {
+        // Criar papéis
+        $admin = Role::create(['name' => 'admin']);
+        $supervisor1 = Role::create(['name' => 'supervisor1']);
+        $supervisor2 = Role::create(['name' => 'supervisor2']);
+
+        // Criar permissões
+        Permission::create(['name' => 'view dashboard supervisor1']);
+        Permission::create(['name' => 'view dashboard supervisor2']);
+        Permission::create(['name' => 'manage stock']);
+        Permission::create(['name' => 'manage employees']);
+
+        // Atribuir permissões aos papéis
+        $admin->givePermissionTo(Permission::all());
+        $supervisor1->givePermissionTo(['view dashboard supervisor1', 'manage stock']);
+        $supervisor2->givePermissionTo(['view dashboard supervisor2', 'manage employees']);
+    }
+}
+// fazer o gate dos usuarios por aqu

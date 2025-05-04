@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Frequencia extends Model
 {
-    //
+    //Registrar Frequencia -> atributos do funcionario
+}
+{
+    
 }
