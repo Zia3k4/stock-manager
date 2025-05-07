@@ -1,11 +1,10 @@
 <?php
 
 namespace Database\Seeders;
-
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+
+
 class ProdutoSeeder extends Seeder
 {
     /**
@@ -74,10 +73,10 @@ class ProdutoSeeder extends Seeder
         foreach ($produtos as $produto) {
             //ver a compatibilidades das namespace, isso é do projeto versao anterior
             DB::table('produtos')->updateOrInsert(
-                ['descricao' => $produto['descricao'], 'nota_fiscal' => $produto['nota_fiscal']], 
+                ['descricao' => $produto['descricao'], 'nota_fiscal' => $produto['nota_fiscal']],
                 $produto
         );
         }
     }
-    
+
 }
