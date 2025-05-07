@@ -14,7 +14,7 @@ use App\Http\Controllers\Supervisor1Controller;
 use App\Http\Controllers\Supervisor2Controller;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [ 
+    return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // minhas rotas
-    Route::middleware(['role:gerente'])->prefix('gerente')->name('gerente.')->group(function () {
+    Route::middleware(['role:admin'])->prefix('gerente')->name('gerente.')->group(function () {
         Route::get('/dashboard', [GerenteController::class, 'index'])->name('dashboard');
 
         // Funcionalidades do gerente
