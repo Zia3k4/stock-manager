@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('email', 255)->unique();
             $table->string('password', 255);
             $table->timestamp('data_registro')->useCurrent();
-            $table->enum('role', ['admin', 'user'])->default('user');
+           $table->string('role')->nullable();
+
         });
     }
      /**

@@ -1,5 +1,5 @@
 <?php
-//arquivo feito pelo gpt
+//revisar
 namespace App\Services;
 
 use App\Models\Funcionario;
@@ -25,4 +25,4 @@ class RHService
         return round($total, 2);
     }
 }
-//feito pelo gpt ate aqui depois corrigir
+///revisar
