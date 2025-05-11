@@ -1,5 +1,5 @@
 # Projeto-Laravel2
-
+## obs :  Atualizar depois
  Gerenciamento de Estoque, API de administraçao e controle de estoque
 
 ## 📸 Demonstração (opcional)

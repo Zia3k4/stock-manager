@@ -1,5 +1,5 @@
 <?php
-//ass:gpt revisar depois a logica
+//revisar
 namespace App\Utils;
 
 class SessionHelper
@@ -18,5 +18,5 @@ class SessionHelper
     {
         return auth()->check() ? auth()->id() : null;
     }
-    //ass : gpt
+    //revisar
 }

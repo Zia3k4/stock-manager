@@ -9,8 +9,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Fornecedore
- * 
+ * Class Fornecedores
+ *
  * @property int $id
  * @property string $nome
  * @property string $cnpj
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Fornecedore extends Model
+class Fornecedores extends Model
 {
 	protected $table = 'fornecedores';
 	public $timestamps = false;
