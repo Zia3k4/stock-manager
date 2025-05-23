@@ -52,11 +52,16 @@ Route::middleware('auth')->group(function () {
 
     // Dashboard Supervisor 2 (Produtos e Estoque)
     Route::middleware(['role:supervisor2'])->prefix('supervisor2')->name('supervisor2.')->group(function () {
+
         Route::get('/dashboard', [Supervisor2Controller::class, 'index'])->name('dashboard');
         Route::resource('/produtos', ProdutosController::class);
         Route::resource('/estoque', EstoqueController::class);
+
+        Route::get('/vendas', [Supervisor2Controller::class, 'vendas'])->name('vendas');
+
     });
 
 });
 //nao remover esta parte debaixo
 require __DIR__.'/auth.php';
+// fazer as 35 rotas

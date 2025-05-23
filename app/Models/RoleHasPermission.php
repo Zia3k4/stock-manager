@@ -5,15 +5,14 @@
  */
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class RoleHasPermission
- * 
+ *
  * @property int $permission_id
  * @property int $role_id
- * 
+ *
  * @property Permission $permission
  * @property Role $role
  *

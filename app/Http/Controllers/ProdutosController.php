@@ -15,26 +15,26 @@ class ProdutosController extends Controller
     *
     * @return \Illuminate\View\View
     */
-    public function index()  
+    public function index()
      {
-    $produtos = produtos::orderBy ('created_at','DESC')->get();
+    $produtos = Produto::orderBy ('created_at','DESC')->get();
     return view('produtos.index', compact(var_name:'produtos'));
     //public function index()
     /**
      *  @return \Illuminate\Http\Response
-     * 
+     *
      */
      }
-     public function create() 
+     public function create()
     {
         return view('produtos.create');
     }
 
      /**
-     * @param \Illuminate\Http\Request  $request    
+     * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
-     * 
-     */ 
+     *
+     */
     public function store(Request $request)
     {
         //validacao
@@ -45,16 +45,16 @@ class ProdutosController extends Controller
         'nota_fiscal' => 'required|string|max:255',
         'fornecedor_id' => 'required|exists:fornecedores,id',
     ]);
-                 
-    $produto = new produtos();
 
-    $produto->descricao = $request->descricao; 
-    $produto->preco = $request->preco; 
+    $produto = new Produto();
+
+    $produto->descricao = $request->descricao;
+    $produto->preco = $request->preco;
     $produto->qtd_disponivel = $request->qtd_disponivel;
     $produto->nota_fiscal = $request->nota_fiscal;
     $produto->fornecedor_id = $request->fornecedor_id;
 
-    $produto->save(); 
+    $produto->save();
 
     session()->flash('success', 'Produto criado com sucesso!');
 
@@ -65,7 +65,6 @@ class ProdutosController extends Controller
         $codigo=$request -> input('');
         $produto=$request->input();
         return response()->json($produto);
-    } 
+    }
 
 }
-    

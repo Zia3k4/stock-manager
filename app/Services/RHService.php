@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Funcionario;
 use App\Models\Frequencia;
+use App\Models\registro_frequencia;
 
 class RHService
 {
@@ -14,7 +15,7 @@ class RHService
     public function calcularSalario(int $funcionarioId): float
     {
         $funcionario = Funcionario::findOrFail($funcionarioId);
-        $frequencia = Frequencia::where('funcionario_id', $funcionarioId)->get();
+        $frequencia =registro_frequencia::where('funcionario_id', $funcionarioId)->get();
 
         $salarioBase = $funcionario->salario;
         $horasExtras = $frequencia->sum('horas_extras');

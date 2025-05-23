@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Database\Seeders\FuncionarioSeeder;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,14 +12,35 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Etapa 1: Permissões e papéis (deve vir antes dos usuários)
+        app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+        ]);
 
-        $this -> call(class:FornecedoresSeeder::class);
+        // Etapa 2: Dados de negócio
+        $this->call([
+            FornecedoresSeeder::class,     // 2.1 Fornecedores
+            ProdutoSeeder::class,          // 2.2 Produtos
+            VendasSeeder::class,           // 2.3 Vendas
+            ItemVendasSeeder::class,       // 2.4 Itens de Venda
+            EstoqueSeeder::class,          // 2.5 Estoque
+        ]);
 
-        $this-> call(class: ProdutoSeeder::class);
+        // Etapa 3: Recursos Humanos
+        $this->call([
+            FuncionarioSeeder::class,      // 3.1 Funcionários
+        ]);
 
-        $this-> call(class:FuncionarioSeeder::class);
-        $this-> call(class:UserSeeder::class);
+        // Etapa 4: Usuários e permissões
+        $this->call([
+            UserSeeder::class,             // 4.1 Criação e roles
+        ]);
+
+        // Etapa 5: Registro de frequência
+        $this->call([
+            RegistroFrequenciaSeeder::class, // 5.1 Frequência
+        ]);
     }
-
 }

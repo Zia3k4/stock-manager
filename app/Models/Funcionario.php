@@ -6,11 +6,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Funcionario
- * 
+ *
  * @property int $id
  * @property string $nome
  * @property string $cpf
@@ -22,16 +23,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $telefone
  * @property string $email
  *
+ * @property Collection|registro_frequencia[] $registro_frequencia
+ *
  * @package App\Models
  */
 class Funcionario extends Model
 {
 	protected $table = 'funcionarios';
-	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'id' => 'int',
 		'salario' => 'float'
 	];
 
@@ -46,4 +47,9 @@ class Funcionario extends Model
 		'telefone',
 		'email'
 	];
+
+	public function registro_frequencia()
+	{
+		return $this->hasMany(registro_frequencia::class);
+	}
 }

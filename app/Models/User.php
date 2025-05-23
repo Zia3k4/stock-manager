@@ -5,12 +5,11 @@
  */
 
 namespace App\Models;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 /**
  * Class User
  *
@@ -20,16 +19,16 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property Carbon $data_registro
- * @property string $role
+ * @property string|null $role
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
  * @package App\Models
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
-    use HasRoles, Notifiable;
+    use Notifiable, HasRoles;
 	protected $table = 'users';
 
 	protected $casts = [
@@ -51,5 +50,4 @@ class User extends Authenticatable implements MustVerifyEmail
 		'role',
 		'remember_token'
 	];
-
 }

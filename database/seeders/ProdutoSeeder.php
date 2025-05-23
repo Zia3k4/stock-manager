@@ -12,7 +12,7 @@ class ProdutoSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('produtos')->truncate();
+
 
         $produtos = [
             ['descricao' => 'Cimento CP II 50kg', 'preco' => 25.90, 'qtd_disponivel' => 100, 'nota_fiscal' => 'NF001', 'fornecedor_id' => 1],
