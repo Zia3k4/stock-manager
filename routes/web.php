@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
+
+    // rotas para views
     // minhas rotas
     Route::middleware(['role:admin'])->prefix('gerente')->name('gerente.')->group(function () {
         Route::get('/dashboard', [GerenteController::class, 'index'])->name('dashboard');
@@ -64,4 +67,9 @@ Route::middleware('auth')->group(function () {
 });
 //nao remover esta parte debaixo
 require __DIR__.'/auth.php';
-// fazer as 35 rotas
+require __DIR__.'/web/publico.php';
+require __DIR__.'/web/gerente.php';
+require __DIR__.'/web/supervisor1.php';
+require __DIR__.'/web/supervisor2.php';
+
+// fazer das views aqui
