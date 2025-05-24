@@ -19,9 +19,9 @@ class Kernel extends HttpKernel
         HandleCors::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\SetCacheHeaders::class,
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        StartSession::class,
+        ShareErrorsFromSession::class,
+        SubstituteBindings::class,
     ];
 
     /**
@@ -38,7 +38,18 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'role' => RoleMiddleware::class, //
-        // Adicione esta linha
-       
+         // Adicione esta linha
+         'gerente' => [
+         'auth',
+          'permission:dashboard.gerente'
+        ],
+         'supervisor1' => [
+          'auth',
+         'permission:dashboard.supervisor1'
+       ],
+         'supervisor2' => [
+         'auth',
+         'permission:dashboard.supervisor2'
+       ],
     ];
 }
