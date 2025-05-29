@@ -1,4 +1,4 @@
-# Projeto-Laravel2
+# Stock-Manager
 ## obs :  Atualizar depois
  Gerenciamento de Estoque, API de administraçao e controle de estoque
 
