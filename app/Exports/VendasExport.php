@@ -1,8 +1,9 @@
 <?php
 namespace App\Exports;
 
+use App\Models\User;
+use App\Models\Usuario;
 use App\Models\Venda;
-
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -35,21 +36,21 @@ class VendasExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSi
     {
         return [
             'ID',
-            'data_venda',
-            'nome_cliente',
-            'cpf_cliente',
-            'valor_total',
+            'Nome',
+            'Email',
+            'Criado em',
+            'Atualizado em',
         ];
     }
 
-    public function map($venda): array
+    public function map($usuario): array
     {
         return [
-            $venda->id,
-            $venda->data_venda ? $venda->data_venda->format('d/m/Y H:i:s') : '',
-            $venda->nome_cliente,
-            $venda->cpf_cliente,
-            $venda->valor_total,
+            $usuario->id,
+            $usuario->name,
+            $usuario->email,
+            $usuario->created_at->format('d/m/Y H:i:s'),
+            $usuario->updated_at->format('d/m/Y H:i:s'),
         ];
     }
 

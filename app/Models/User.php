@@ -1,40 +1,56 @@
 <?php
+
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Auth\Passwords\CanResetPassword;
 
+/**
+ * Class User
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property Carbon|null $email_verified_at
+ * @property string $password
+ * @property Carbon $data_registro
+ * @property string|null $role
+ * @property string|null $remember_token
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
-use Notifiable, HasRoles,HasFactory, CanResetPassword;
+    use Notifiable,
+        HasRoles;
+	protected $table = 'users';
 
-protected $table = 'users';
+	protected $casts = [
+		'email_verified_at' => 'datetime',
+		'data_registro' => 'datetime'
+	];
 
-private const FILLABLE_FIELDS = [
-'name',
-'email',
-'email_verified_at',
-'password',
-'created_at',
-'role',
-'remember_token',
-];
+	protected $hidden = [
+		'password',
+		'remember_token'
+	];
 
-private const HIDDEN_FIELDS = [
-'password',
-'remember_token',
-];
-
-private const CASTS_FIELDS = [
-'email_verified_at' => 'datetime',
-'created_at' => 'datetime',
-];
-
-protected $fillable = self::FILLABLE_FIELDS;
-protected $hidden = self::HIDDEN_FIELDS;
-protected $casts = self::CASTS_FIELDS;
+	protected $fillable = [
+		'name',
+		'email',
+		'email_verified_at',
+		'password',
+		'data_registro',
+		'role',
+		'remember_token'
+	];
 }

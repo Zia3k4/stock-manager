@@ -2,27 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FornecedoresRequest;
 use App\Models\Fornecedores;
-use Inertia\Inertia;
-use Illuminate\Http\RedirectResponse;
-//revisado 1
+use Illuminate\Http\Request;
+
 class FornecedorController extends Controller
 {
+    /**
+     * Controller responsável pelo gerenciamento de fornecedores.
+     * Inclui funcionalidades de listagem, criação, edição, exclusão,
+     *  busca e visualização de detalhes.
+     * @return \Illuminate\View\View
+     */
+
     public function index()
     {
-        return Inertia::render('Fornecedores/Index', [
-            'fornecedores' => Fornecedores::all(),
-            'success' => session('success'),
-            'error' => session('error'),
+        return view('fornecedores.index', [
+            'fornecedores' => Fornecedores::latest()->get()
         ]);
     }
     public function create()
     {
-       return Inertia::render('Fornecedores/Create');
+        return view('fornecedores.create');
     }
-
-    public function store(FornecedoresRequest $request)
+    /**
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
     {
         // Validação
         $request->validate([
@@ -46,23 +52,27 @@ class FornecedorController extends Controller
 
         return redirect()->route('fornecedores.index')->with('success', 'Fornecedor cadastrado com sucesso!');
     }
-
-    public function show($id)
+    /**
+     * Exibe o formulário de edição de um fornecedor.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
+    public function edit($id)
     {
-     return Inertia::render('Fornecedores/Show', [
-            'fornecedor' => Fornecedores::findOrFail($id),
-        ]);
+        $fornecedor = Fornecedores::findOrFail($id);
+        return view('fornecedores.edit', compact('fornecedor'));
     }
-
-    public function edit(int $id)
+    /**
+     * Atualiza um fornecedor existente.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, $id)
     {
-      return Inertia::render('Fornecedores/Edit', [
-            'fornecedor' => Fornecedores::findOrFail($id),
-        ]);
-    }
-      public function update(FornecedoresRequest $request, $id)
-    {
-        // Validação, atualiaza fornecedor existente
+        // Validação
         $request->validate([
         'nome' => 'required|string|max:255',
         'cnpj' => 'required|string|max:18',
@@ -83,12 +93,59 @@ class FornecedorController extends Controller
 
         return redirect()->route('fornecedores.index')->with('success', 'Fornecedor atualizado com sucesso!');
     }
-    public function destroy($id):RedirectResponse
+    /**
+     * Remove um fornecedor existente.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy($id)
     {
         $fornecedor = Fornecedores::findOrFail($id);
         $fornecedor->delete();
 
         return redirect()->route('fornecedores.index')->with('success', 'Fornecedor removido com sucesso!');
     }
+    /**
+     * Exibe os detalhes de um fornecedor.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
+    public function show($id)
+    {
+        $fornecedor = Fornecedores::findOrFail($id);
+        return view('fornecedores.show', compact('fornecedor'));
+    }
+    /**
+     * Exibe o formulário de pesquisa de fornecedores.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function search()
+    {
+        return view('fornecedores.search');
+    }
+    /**
+     * Pesquisa fornecedores com base no nome.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
+    public function searchResults(Request $request)
+    {
+        $request->validate([
+            'nome' => 'required|string|max:255',
+        ]);
+
+        $fornecedores = Fornecedores::where('nome', 'like', '%' . $request->nome . '%')->get();
+
+        return view('fornecedores.search_results', compact('fornecedores'));
+    }
+    /**
+     * Exibe o formulário de importação de fornecedores.
+     *
+     * @return \Illuminate\View\View
+     */
 
 }
