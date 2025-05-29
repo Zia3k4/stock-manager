@@ -6,6 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Models\Produtos;
 use Laracasts\Flash\Flash;
+use Inertia\Inertia;
 //depois eu vejo se é necessario usar essa model aqui e configuarar as chamadas das variaveis
 
 
@@ -17,8 +18,9 @@ class ProdutosController extends Controller
     */
     public function index()
      {
-    $produtos = Produto::orderBy ('created_at','DESC')->get();
-    return view('produtos.index', compact(var_name:'produtos'));
+    return view('produtos.index', [
+        'produtos' => Produto::latest()->get()
+    ]);
     //public function index()
     /**
      *  @return \Illuminate\Http\Response
@@ -46,15 +48,15 @@ class ProdutosController extends Controller
         'fornecedor_id' => 'required|exists:fornecedores,id',
     ]);
 
-    $produto = new Produto();
+    $produtos = new Produto();
 
-    $produto->descricao = $request->descricao;
-    $produto->preco = $request->preco;
-    $produto->qtd_disponivel = $request->qtd_disponivel;
-    $produto->nota_fiscal = $request->nota_fiscal;
-    $produto->fornecedor_id = $request->fornecedor_id;
+    $produtos->descricao = $request->descricao;
+    $produtos->preco = $request->preco;
+    $produtos->qtd_disponivel = $request->qtd_disponivel;
+    $produtos->nota_fiscal = $request->nota_fiscal;
+    $produtos->fornecedor_id = $request->fornecedor_id;
 
-    $produto->save();
+    $produtos->save();
 
     session()->flash('success', 'Produto criado com sucesso!');
 
@@ -63,8 +65,47 @@ class ProdutosController extends Controller
     public function buscarproduto(Request $request)
     {
         $codigo=$request -> input('');
-        $produto=$request->input();
-        return response()->json($produto);
+        $produtos=$request->input();
+        return response()->json($produtos);
+    }
+    public function show($id)
+    {
+        $produtos = Produto::findOrFail($id);
+
+        return Inertia::render('Produtos/Show', [
+            'produto' => $produtos
+        ]);
+    }
+    /**
+     * Exibe o formulário de edição de um produto.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
+   public function edit($id)
+   {
+     $produtos = Produto::findOrFail($id);
+
+     return view('produtos.edit', [
+        'produto' => $produtos
+      ]);
+    }
+    public function update(Request $request, $id)
+    {
+        $produtos = Produto::findOrFail($id);
+
+        $produtos->update($request->all());
+
+        Flash::success('Produto atualizado com sucesso!');
+
+        return redirect()->route('produtos.index');
+    }
+
+    public function destroy(Produto $produtos)
+    {
+        $produtos->delete();
+
+        return redirect()->route('products.index')->with('success', 'Produto removido.');
     }
 
 }

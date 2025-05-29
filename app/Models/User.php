@@ -7,9 +7,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+
 /**
  * Class User
  *
@@ -28,7 +30,8 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use Notifiable,
+        HasRoles;
 	protected $table = 'users';
 
 	protected $casts = [
