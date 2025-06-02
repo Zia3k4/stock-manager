@@ -11,7 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('estoque', function (Blueprint $table) {
+            $table->id();
+            $table->string('nome', 255);
+            $table->string('descricao', 500)->nullable();
+            $table->integer('lote')->default(0);
+            $table->decimal('preco_unitario', 10, 2)->default(0.00);
+            $table->timestamps(); // Cria as colunas created_at e updated_at
+        });
     }
 
     /**

@@ -23,6 +23,7 @@ class VendasSeeder extends Seeder
                 'nome_cliente' => $faker->name,
                 'cpf_cliente' => $faker->numerify('###.###.###-##'),
                 'valor_total' => $faker->randomFloat(2, 50, 1000),
+                'created_at' => now(),
             ]);
         }
     }

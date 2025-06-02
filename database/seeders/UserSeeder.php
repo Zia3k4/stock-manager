@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
                     'name' => $data['name'],
                     'email_verified_at' => now(),
                     'password' => $data['password'],
-                    'data_registro' => now(),
+                    'updated_at' => now(),
                     'remember_token' => null,
                 ]
             );

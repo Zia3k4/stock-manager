@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name', 255);
             $table->string('email', 255)->unique();
             $table->string('password', 255);
-            $table->timestamp('data_registro')->useCurrent();
            $table->string('role')->nullable();
 
         });

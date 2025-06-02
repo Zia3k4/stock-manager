@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Funcionario
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
+
 class Funcionario extends Model
 {
 	protected $table = 'funcionarios';
@@ -48,8 +50,9 @@ class Funcionario extends Model
 		'email'
 	];
 
-	public function registro_frequencia()
-	{
+	public function registro_frequencia(): HasMany
+    {
 		return $this->hasMany(registro_frequencia::class);
 	}
+
 }

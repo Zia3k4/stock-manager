@@ -2,30 +2,26 @@
 
 namespace App\Exports;
 
-use App\Models\Produto;
+use App\Models\registro_frequencia;
+use App\Models\Horastrabalhadas;
+
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
-class ProdutosExport implements FromCollection
+class RhServiceExport implements FromCollection,FromQuery
 {
     use Exportable;
     /**
     * @return \Illuminate\Support\Collection
     */
-    private $columns = [
-        'id',
-        'nome',
-        'descricao',
-        'preco',
-        'quantidade',
-        'categoria_id',
-    ];
+    
+
     public function collection()
     {
-        return Produto::all();
+        return registro_frequencia::all();
     }
     public function query()
     {
-        return Produto::query();
+        return registro_frequencia::query();
     }
 }

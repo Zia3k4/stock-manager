@@ -17,7 +17,7 @@ return new class extends Migration
     $table->string('nome_cliente')->nullable();
     $table->string('cpf_cliente', 14)->nullable();
     $table->decimal('valor_total', 10, 2)->default(0);
-});
+    $table->timestamps();});
 
 
     }

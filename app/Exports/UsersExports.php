@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Exports;
+
 use App\Models\User;
-use App\Models\Usuario;
+
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -22,9 +23,18 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Style\Font;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class UsuariosExports implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithTitle, WithEvents, WithStyles, WithColumnFormatting, FromQuery
+class UsersExports implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithTitle, WithEvents, WithStyles, WithColumnFormatting, FromQuery
 {
     use Exportable;
+
+    private $columns = [
+        'id',
+        'name',
+        'email',
+        'password',
+        'created_at',
+        'role',
+    ];
 
     public function query()
     {
@@ -47,20 +57,21 @@ class UsuariosExports implements FromCollection, WithHeadings, WithMapping, Shou
         ];
     }
 
-    public function map($usuario): array
+    public function map($users): array
     {
         return [
-            $usuario->id,
-            $usuario->name,
-            $usuario->email,
-            $usuario->created_at->format('d/m/Y H:i:s'),
-            $usuario->updated_at->format('d/m/Y H:i:s'),
+            $users->id,
+            $users->name,
+            $users->email,
+            $users->password,
+            $users->created_at->format('d/m/Y H:i:s'),
+            $users->role ? $users->role->name : 'N/A',
         ];
     }
 
     public function title(): string
     {
-        return 'Usuários';
+        return User::class;
     }
 
     public function styles(Worksheet $sheet)
@@ -93,19 +104,19 @@ class UsuariosExports implements FromCollection, WithHeadings, WithMapping, Shou
             },
         ];
     }
-    public function download($fileName = 'usuarios.xlsx')
+    public function download($fileName = 'users.xlsx')
     {
         return $this->download($fileName);
     }
-    public function export($fileName = 'usuarios.xlsx')
+    public function export($fileName = 'users.xlsx')
     {
         return $this->download($fileName);
     }
-    public function store($fileName = 'usuarios.xlsx')
+    public function store($fileName = 'users.xlsx')
     {
         return $this->store($fileName);
     }
-    public function save($fileName = 'usuarios.xlsx')
+    public function save($fileName = 'users.xlsx')
     {
         return $this->save($fileName);
     }
