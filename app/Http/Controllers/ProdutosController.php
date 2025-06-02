@@ -1,45 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\produto;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
-use App\Models\Produtos;
+use App\Models\Produto;
 use Laracasts\Flash\Flash;
 use Inertia\Inertia;
-//depois eu vejo se é necessario usar essa model aqui e configuarar as chamadas das variaveis
-
+use App\Http\Requests\ProdutosRequest;
 
 class ProdutosController extends Controller
-{    /**
-    * Exibe a lista de produtos.
-    *
-    * @return \Illuminate\View\View
-    */
+{
     public function index()
      {
-    return view('produtos.index', [
-        'produtos' => Produto::latest()->get()
-    ]);
-    //public function index()
-    /**
-     *  @return \Illuminate\Http\Response
-     *
-     */
+       return Inertia::render('Produtos/Index', [
+            'produtos' => Produto::latest()->get(),
+        ]);
      }
      public function create()
     {
-        return view('produtos.create');
+        return Inertia::render('Produtos/Create');
     }
 
-     /**
-     * @param \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     */
-    public function store(Request $request)
+    public function store(ProdutosRequest $request)
     {
-        //validacao
         $request->validate([
         'descricao' => 'required|string|max:255',
         'preco' => 'required|numeric|min:0',
@@ -62,38 +43,32 @@ class ProdutosController extends Controller
 
     return back();
     }
-    public function buscarproduto(Request $request)
-    {
-        $codigo=$request -> input('');
-        $produtos=$request->input();
-        return response()->json($produtos);
-    }
     public function show($id)
     {
-        $produtos = Produto::findOrFail($id);
-
         return Inertia::render('Produtos/Show', [
-            'produto' => $produtos
+            'produtos' => Produto::findOrFail($id),
+            // Supondo que você tenha um modelo Fornecedor
         ]);
     }
     /**
      * Exibe o formulário de edição de um produto.
-     *
-     * @param int $id
-     * @return \Illuminate\View\View
      */
    public function edit($id)
    {
-     $produtos = Produto::findOrFail($id);
-
-     return view('produtos.edit', [
-        'produto' => $produtos
-      ]);
+       return Inertia::render('Produtos/Edit', [
+              'produtos' => Produto::findOrFail($id),
+               // Supondo que você tenha um modelo Fornecedor
+        ]);
     }
-    public function update(Request $request, $id)
-    {
+    public function update(ProdutosRequest $request, $id)
+    {   $request->validate([
+        'descricao' => 'required|string|max:255',
+        'preco' => 'required|numeric|min:0',
+        'qtd_disponivel' => 'required|integer|min:0',
+        'nota_fiscal' => 'required|string|max:255',
+        'fornecedor_id' => 'required|exists:fornecedores,id',
+    ]);
         $produtos = Produto::findOrFail($id);
-
         $produtos->update($request->all());
 
         Flash::success('Produto atualizado com sucesso!');
@@ -105,7 +80,7 @@ class ProdutosController extends Controller
     {
         $produtos->delete();
 
-        return redirect()->route('products.index')->with('success', 'Produto removido.');
+        return redirect()->route('products.index')->with('success', 'Produto removido!');
     }
 
 }

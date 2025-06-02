@@ -2,28 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\FuncionarioRequest;
+use Inertia\Inertia;
 
 class SiteController extends Controller
 {
     // sites de contratos ,termos, fale conosco, etc
-    /**
-     * Exibe a página inicial do site.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
+    public function termos()
     {
-        return view('site.index');
+        return response()->json([
+            'message' => 'Leia os termos de uso do site.',
+        ]);
     }
 
-    public function sobre()
+    public function about()
     {
-        return view('site.sobre');
+        return response()->json([
+            'message' => 'Sobre nós: conheça nossa empresa e nossos valores.',
+        ]);
     }
 
     public function contato()
     {
-        return view('site.contato');
+        return response()->json([
+            'message' => 'Entre em contato conosco para mais informações.',
+        ]);
     }
 }
+/**
+ *  este aqui ver mais tarde , é termos, contratos e fale conosco
+ */
