@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('cep', 9)->nullable();
             $table->string('contato')->nullable();
             $table->string('endereco')->nullable();
+            $table->timestamp('created_at')->nullable();;
         });
     }
 

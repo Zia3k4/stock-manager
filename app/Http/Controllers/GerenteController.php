@@ -1,5 +1,5 @@
-<?php
 
+//talvez seja definido em outro lugar, mas aqui está um exemplo básico de um controlador GerenteController
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;

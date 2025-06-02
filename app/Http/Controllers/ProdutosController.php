@@ -1,43 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\produto;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
-use App\Models\Produtos;
+use App\Models\Produto;
 use Laracasts\Flash\Flash;
-//depois eu vejo se é necessario usar essa model aqui e configuarar as chamadas das variaveis
-
+use Inertia\Inertia;
+use App\Http\Requests\ProdutosRequest;
 
 class ProdutosController extends Controller
-{    /**
-    * Exibe a lista de produtos.
-    *
-    * @return \Illuminate\View\View
-    */
+{
     public function index()
      {
-    $produtos = Produto::orderBy ('created_at','DESC')->get();
-    return view('produtos.index', compact(var_name:'produtos'));
-    //public function index()
-    /**
-     *  @return \Illuminate\Http\Response
-     *
-     */
+       return Inertia::render('Produtos/Index', [
+            'produtos' => Produto::latest()->get(),
+        ]);
      }
      public function create()
     {
-        return view('produtos.create');
+        return Inertia::render('Produtos/Create');
     }
 
-     /**
-     * @param \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     */
-    public function store(Request $request)
+    public function store(ProdutosRequest $request)
     {
-        //validacao
         $request->validate([
         'descricao' => 'required|string|max:255',
         'preco' => 'required|numeric|min:0',
@@ -46,25 +29,58 @@ class ProdutosController extends Controller
         'fornecedor_id' => 'required|exists:fornecedores,id',
     ]);
 
-    $produto = new Produto();
+    $produtos = new Produto();
 
-    $produto->descricao = $request->descricao;
-    $produto->preco = $request->preco;
-    $produto->qtd_disponivel = $request->qtd_disponivel;
-    $produto->nota_fiscal = $request->nota_fiscal;
-    $produto->fornecedor_id = $request->fornecedor_id;
+    $produtos->descricao = $request->descricao;
+    $produtos->preco = $request->preco;
+    $produtos->qtd_disponivel = $request->qtd_disponivel;
+    $produtos->nota_fiscal = $request->nota_fiscal;
+    $produtos->fornecedor_id = $request->fornecedor_id;
 
-    $produto->save();
+    $produtos->save();
 
     session()->flash('success', 'Produto criado com sucesso!');
 
     return back();
     }
-    public function buscarproduto(Request $request)
+    public function show($id)
     {
-        $codigo=$request -> input('');
-        $produto=$request->input();
-        return response()->json($produto);
+        return Inertia::render('Produtos/Show', [
+            'produtos' => Produto::findOrFail($id),
+            // Supondo que você tenha um modelo Fornecedor
+        ]);
+    }
+    /**
+     * Exibe o formulário de edição de um produto.
+     */
+   public function edit($id)
+   {
+       return Inertia::render('Produtos/Edit', [
+              'produtos' => Produto::findOrFail($id),
+               // Supondo que você tenha um modelo Fornecedor
+        ]);
+    }
+    public function update(ProdutosRequest $request, $id)
+    {   $request->validate([
+        'descricao' => 'required|string|max:255',
+        'preco' => 'required|numeric|min:0',
+        'qtd_disponivel' => 'required|integer|min:0',
+        'nota_fiscal' => 'required|string|max:255',
+        'fornecedor_id' => 'required|exists:fornecedores,id',
+    ]);
+        $produtos = Produto::findOrFail($id);
+        $produtos->update($request->all());
+
+        Flash::success('Produto atualizado com sucesso!');
+
+        return redirect()->route('produtos.index');
+    }
+
+    public function destroy(Produto $produtos)
+    {
+        $produtos->delete();
+
+        return redirect()->route('products.index')->with('success', 'Produto removido!');
     }
 
 }

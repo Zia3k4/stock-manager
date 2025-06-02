@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,37 +29,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
-        ]);
-
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        if (! Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->back()->withErrors([
-                'email' => 'As credenciais estão incorretas.',
-            ])->onlyInput('email');
-        }
-
-        $request->session()->regenerate();
-
-        $user = Auth::user();
-        //DASHBOARD DO GERENTE
-        if ($user->hasRole('admin')) {
-            return redirect()->route('admin.dashboard');
-
-        //DASHBOARD DO SUPERVISOR 1
-        } elseif ($user->hasRole('user')) {
-            return redirect()->route('supervisor1.dashboard');
-        //DASHBOARD DO SUPERVISOR 2
-        } elseif ($user->hasRole('user')) {
-            return redirect()->route('supervisor2.dashboard');
-        } else {
-            return redirect()->route('dashboard');
-        }
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
