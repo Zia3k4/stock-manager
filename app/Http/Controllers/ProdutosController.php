@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Produto;
-use Laracasts\Flash\Flash;
+// use Laracasts\Flash\Flash;
 use Inertia\Inertia;
 use App\Http\Requests\ProdutosRequest;
 
@@ -71,7 +71,7 @@ class ProdutosController extends Controller
         $produtos = Produto::findOrFail($id);
         $produtos->update($request->all());
 
-        Flash::success('Produto atualizado com sucesso!');
+        session()->flash('success', 'Produto atualizado com sucesso!');
 
         return redirect()->route('produtos.index');
     }

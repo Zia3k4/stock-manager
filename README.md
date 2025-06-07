@@ -87,7 +87,7 @@ Supervisor 2: produtos e estoque
 │   │   ├── AuthService.php
 │   │   ├── BackupService.php
 │   │   ├── EstoqueService.php
-│   │   └── RHService.php
+│   │   └── RhServiceService.php
 │   └── View
 │       └── Components
 ├── artisan

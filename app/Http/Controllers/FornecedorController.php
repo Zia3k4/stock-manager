@@ -43,7 +43,6 @@ class FornecedorController extends Controller
 
 
         $fornecedor->save();
-
         return redirect()->route('fornecedores.index')->with('success', 'Fornecedor cadastrado com sucesso!');
     }
 

@@ -6,7 +6,7 @@ use App\Models\Funcionario;
 use App\Models\Frequencia;
 use App\Models\registro_frequencia;
 
-class RHService
+class RhServiceService
 {
     //colocar no autoload depois o helper la
     /**
