@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 use Inertia\Inertia;
 class UsuarioController extends Controller
 {
@@ -11,27 +11,29 @@ class UsuarioController extends Controller
     {
 
        return Inertia::render('Usuarios/Index', [
-            'usuarios' => User::all(),
+            'users' => User::all(),
         ]);
     }
     public function create()
     {
         return Inertia::render('Usuarios/Create');
     }
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         // Validação dos dados do usuário
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'requir ed|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'role' => 'nullable|string|max:255',
         ]);
 
         // Criação do usuário
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
+        'role' => 'nullable|string|max:255',
         ]);
 
         // Redireciona para a lista de usuários com uma mensagem de sucesso
@@ -41,7 +43,7 @@ class UsuarioController extends Controller
     {
         // Busca o usuário pelo ID e retorna uma view para exibir os detalhes
         return Inertia::render('Usuarios/Show', [
-            'usuario' => User::findOrFail($id),
+            'users' => User::findOrFail($id),
         ]);
     }
 
@@ -49,26 +51,27 @@ class UsuarioController extends Controller
     {
         // Busca o usuário pelo ID e retorna uma view para editar
     return Inertia::render('Usuarios/Edit', [
-            'usuario' => User::findOrFail($id),
+            'users' => User::findOrFail($id),
         ]);
     }
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         // Validação dos dados do usuário
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8|confirmed',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'role' => 'nullable|string|max:255',
         ]);
 
         // Atualiza o usuário
-        $user = User::findOrFail($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $users = User::findOrFail($id);
+        $users->name = $request->name;
+        $users->email = $request->email;
         if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
+            $users->password = bcrypt($request->password);
         }
-        $user->save();
+        $users->save();
 
         // Redireciona para a lista de usuários com uma mensagem de sucesso
         return redirect()->route('usuarios.index')->with('success', 'Usuário atualizado com sucesso!');
@@ -76,8 +79,8 @@ class UsuarioController extends Controller
     public function destroy($id)
     {
         // Busca o usuário pelo ID e deleta
-        $user = User::findOrFail($id);
-        $user->delete();
+        $users = User::findOrFail($id);
+        $users->delete();
 
         // Redireciona para a lista de usuários com uma mensagem de sucesso
         return redirect()->route('usuarios.index')->with('success', 'Usuário deletado com sucesso!');

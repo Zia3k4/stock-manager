@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Funcionario;
 use App\Models\registro_frequencia;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
-
+use App\Http\Requests\RhServiceRequest;
+use Inertia\Inertia;
+// revisar depois se esta de acordo com o model
 class RHServiceController extends Controller
 {
-     /**
-     * registrar o serviço de RH
-     * registrar ponto de serviço
-     * situacoes dos funcionarios , ferias, atestados, etc
-     * @return \Illuminate\View\View
-     */
-    public function index(): View
+
+    public function index()
     {
-        return view('rhservice.index', ['registro_frequencia' => registro_frequencia::latest()->get()
-    ]);
+        return Inertia::render('RhServiceService/Index', [
+            'registro_frequencia' => registro_frequencia::latest()->get(),
+            'success' => session('success'),
+            'error' => session('error'),
+        ]);
+
 
     }
      public function create(){
-        return view('rhservice.create');
+        return Inertia::render('RhServiceService/Create', [
+            'funcionarios' => Funcionario::all(), // Certifique-se de que o modelo Funcionario está correto
+        ]);
      }
-    public function store(Request $request)
+    public function store(RhServiceRequest $request)
 {
     // Validação dos campos conforme a estrutura da tabela
     $request->validate([
@@ -57,13 +59,16 @@ class RHServiceController extends Controller
      public function edit($id)
      {
         $registro = registro_frequencia::findOrFail($id);
-        return view('rhservice.edit', compact('registro'));
+       return Inertia::render('RhServiceService/Edit', [
+            'registro' => $registro,
+            'funcionarios' => Funcionario::all(), // Certifique-se de que o modelo Funcionario está correto
+        ]);
      }
-     public function update(Request $request, $id)
+     public function update(RhServiceRequest $request, $id)
      {
-        $registro = registro_frequencia::findOrFail($id);
-        $registro->update($request->all());
-        return redirect()->route('rh.index')->with('success', 'Serviço de RH atualizado com sucesso!');
+         $registro = registro_frequencia::findOrFail($id);
+         $registro->update($request->all());
+         return redirect()->route('rh.index')->with('success', 'Serviço de RH atualizado com sucesso!');
      }
      public function destroy($id)
      {
@@ -71,15 +76,5 @@ class RHServiceController extends Controller
         $registro->delete();
         return redirect()->route('rh.index')->with('success', 'Serviço de RH excluído com sucesso!');
      }
-        public function buscarRegistro(Request $request)
-        {
-           $codigo = $request->input('codigo');
-           $registro = registro_frequencia::where('codigo', $codigo)->first();
 
-           if ($registro) {
-               return response()->json($registro);
-           } else {
-               return response()->json(['message' => 'Registro não encontrado'], 404);
-           }
-        }
    }

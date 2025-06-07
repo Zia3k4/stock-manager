@@ -1,40 +1,30 @@
 <?php
+
 namespace App\Exports;
 
 use App\Models\Venda;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Style\Color;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use PhpOffice\PhpSpreadsheet\Style\Font;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+    use Maatwebsite\Excel\Concerns\FromCollection;
+    use Maatwebsite\Excel\Concerns\WithHeadings;
+    use Maatwebsite\Excel\Concerns\WithMapping;
+    use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+    use Maatwebsite\Excel\Concerns\Exportable;
 
-class VendasExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize, WithTitle, WithEvents, WithStyles, WithColumnFormatting
+class VendasExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
     use Exportable;
 
-    public function query()
+    public function collection(): \Illuminate\Support\Collection
     {
-        return Venda::query();
+        return Venda::all();
+        // Retorna todas as vendas para exportação
+
     }
 
     public function headings(): array
     {
         return [
-            'ID',
+            'id',
             'data_venda',
             'nome_cliente',
             'cpf_cliente',
@@ -46,30 +36,22 @@ class VendasExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSi
     {
         return [
             $venda->id,
-            $venda->data_venda ? $venda->data_venda->format('d/m/Y H:i:s') : '',
+            $venda->data_venda,
             $venda->nome_cliente,
             $venda->cpf_cliente,
             $venda->valor_total,
         ];
     }
 
-    public function title(): string
+    public function fields(): array
     {
-        return 'Vendas';
-    }
+        return [
+            'id',
+            'data_venda',
+            'nome_cliente',
+            'cpf_cliente',
+            'valor_total',
+        ];
 
-    public function registerEvents(): array
-    {
-        return [];
-    }
-
-    public function styles(Worksheet $sheet)
-    {
-        return [];
-    }
-
-    public function columnFormats(): array
-    {
-        return [];
     }
 }

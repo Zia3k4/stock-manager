@@ -12,18 +12,17 @@ class ProdutosRequest extends FormRequest
         return false;
     }
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Get the validation rules that apply to the request
      * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-          'descricao' => 'required|string|max:255',
-            'preco' => 'required|numeric|min:0',
-            'qtd_disponivel' => 'required|integer|min:0',
-            'nota_fiscal' => 'required|string|max:255',
-            'fornecedor_id' => 'required|exists:fornecedores,id',
+        'descricao' => 'required|string|max:255',
+        'preco' => 'required|numeric|min:0',
+        'qtd_disponivel' => 'required|integer|min:0',
+        'nota_fiscal' => 'required|string|max:255',
+        'fornecedor_id' => 'required|exists:fornecedores,id',
         ];
     }
 }

@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,8 +19,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $qtd_disponivel
  * @property string|null $nota_fiscal
  * @property int|null $fornecedor_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
- * @property Collection|Estoque[] $estoques
  * @property Collection|ItensVenda[] $itens_vendas
  *
  * @package App\Models
@@ -27,7 +29,6 @@ use Illuminate\Database\Eloquent\Model;
 class Produto extends Model
 {
 	protected $table = 'produtos';
-	public $timestamps = false;
 
 	protected $casts = [
 		'preco' => 'float',
@@ -42,11 +43,6 @@ class Produto extends Model
 		'nota_fiscal',
 		'fornecedor_id'
 	];
-
-	public function estoques()
-	{
-		return $this->hasMany(Estoque::class);
-	}
 
 	public function itens_vendas()
 	{

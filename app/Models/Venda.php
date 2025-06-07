@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $nome_cliente
  * @property string|null $cpf_cliente
  * @property float $valor_total
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
  * @property Collection|ItensVenda[] $itens_vendas
  *
@@ -26,7 +28,6 @@ use Illuminate\Database\Eloquent\Model;
 class Venda extends Model
 {
 	protected $table = 'vendas';
-	public $timestamps = false;
 
 	protected $casts = [
 		'data_venda' => 'datetime',

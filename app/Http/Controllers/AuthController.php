@@ -1,18 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 { // sites de sobre, contato e termos de uso
-      public function sobre()
+      public function index()
     {
-        return view('site.sobre');
+        return Inertia::render('login/contrato');
     }
 
-    public function contato()
-    {
-        return view('site.contato');
-    }
+
 }

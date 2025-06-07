@@ -13,37 +13,28 @@ use Illuminate\Database\Eloquent\Model;
  * Class Estoque
  * 
  * @property int $id
- * @property int $produto_id
- * @property string $tipo_movimentacao
- * @property int $quantidade
- * @property Carbon $data_movimentacao
- * @property string|null $observacao
- * 
- * @property Produto $produto
+ * @property string $nome
+ * @property string|null $descricao
+ * @property int $lote
+ * @property float $preco_unitario
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
  * @package App\Models
  */
 class Estoque extends Model
 {
 	protected $table = 'estoque';
-	public $timestamps = false;
 
 	protected $casts = [
-		'produto_id' => 'int',
-		'quantidade' => 'int',
-		'data_movimentacao' => 'datetime'
+		'lote' => 'int',
+		'preco_unitario' => 'float'
 	];
 
 	protected $fillable = [
-		'produto_id',
-		'tipo_movimentacao',
-		'quantidade',
-		'data_movimentacao',
-		'observacao'
+		'nome',
+		'descricao',
+		'lote',
+		'preco_unitario'
 	];
-
-	public function produto()
-	{
-		return $this->belongsTo(Produto::class);
-	}
 }
