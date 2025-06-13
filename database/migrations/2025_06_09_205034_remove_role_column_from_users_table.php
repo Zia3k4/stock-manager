@@ -6,19 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('email_verified_at')->nullable()->after('email');
-            $table->rememberToken(); // cria uma coluna "remember_token" VARCHAR(100) NULL
-            $table->timestamps();    // cria "created_at" e "updated_at" automáticos
+            $table->dropColumn('role');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['email_verified_at', 'remember_token', 'created_at', 'updated_at']);
+            //
         });
     }
+
 };

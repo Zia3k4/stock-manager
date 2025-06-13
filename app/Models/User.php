@@ -1,40 +1,42 @@
 <?php
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-use Notifiable, HasRoles,HasFactory, CanResetPassword;
+use Notifiable, HasRoles, HasFactory, HasApiTokens;
 
 protected $table = 'users';
 
-private const FILLABLE_FIELDS = [
+protected $casts = [
+'email_verified_at' => 'datetime',
+];
+
+protected $hidden = [
+'password',
+'remember_token',
+];
+
+protected $fillable = [
 'name',
 'email',
 'email_verified_at',
 'password',
-'created_at',
-'role',
 'remember_token',
 ];
 
-private const HIDDEN_FIELDS = [
-'password',
-'remember_token',
-];
-
-private const CASTS_FIELDS = [
-'email_verified_at' => 'datetime',
-'created_at' => 'datetime',
-];
-
-protected $fillable = self::FILLABLE_FIELDS;
-protected $hidden = self::HIDDEN_FIELDS;
-protected $casts = self::CASTS_FIELDS;
+public function sendPasswordResetNotification($token): void
+{
+$this->notify(new \Illuminate\Auth\Notifications\ResetPassword($token));
+}
+    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

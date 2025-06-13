@@ -3,18 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FuncionarioRequest;
+use App\Services\FuncionarioService;
 use Illuminate\Validation\Rule;
-use App\Models\Funcionario;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+
+//  controller refatorado para usar o Inertia.js e o Service Pattern
+
 class FuncionarioController extends Controller
 {
+    public function __construct(private FuncionarioService $service)
+    {
+        $this->middleware(['auth:sanctum', 'role:Gerente']);
+    }
 
     public function index()
     {
-       return Inertia::render('Funcionarios/Index', [
-            'funcionarios' => Funcionario::latest()->get(),
-        ]);
+    return Inertia::render('Funcionarios/Index', [
+     'funcionarios'=>$this->service->getAll(),
+
+        // dd(auth()->user()->getAllPermissions()->pluck('name'));
+       ]);
+
     }
     public function create()
     {
@@ -22,23 +32,22 @@ class FuncionarioController extends Controller
     }
     public function store(FuncionarioRequest $request): RedirectResponse
     {
-        Funcionario::create($request->validated());
+        $this->service->create($request->validated());
         return redirect()->route('funcionarios.index')->with('success', 'Funcionário criado com sucesso!');
 
     }
 
     public function show(int $id)
     {
-
         return Inertia::render('Funcionarios/Show', [
-            'funcionario' => Funcionario::findOrFail($id),
+            'funcionario' => $this->service->getById($id),
         ]);
     }
     public function edit(int $id)
     {
 
         return Inertia::render('Funcionarios/Edit', [
-            'funcionario' => Funcionario::findOrFail($id),
+            'funcionario'=>$this->service->getById($id),
         ]);
     }
 
@@ -56,17 +65,13 @@ class FuncionarioController extends Controller
             'email' => ['required', 'email', 'max:255', Rule::unique('funcionarios', 'email')->ignore($id)],
         ]);
 
-        $funcionario = Funcionario::findOrFail($id);
-        $funcionario->update($request->all());
-
+        $this->service->update($id, $request->all());
         return redirect()->route('funcionarios.index')->with('success', 'Funcionário atualizado com sucesso!');
     }
 
     public function destroy(int $id): RedirectResponse
     {
-        $funcionario = Funcionario::findOrFail($id);
-        $funcionario->delete();
-
+        $this->service->delete($id);
         return redirect()->route('funcionarios.index')->with('success', 'Funcionário excluído com sucesso!');
     }
 }

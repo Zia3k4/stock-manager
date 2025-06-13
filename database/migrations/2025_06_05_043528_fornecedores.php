@@ -12,19 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fornecedores', function (Blueprint $table) {
-            $table->integer('id', true);
+            $table->id();
             $table->string('nome');
-            $table->string('cnpj', 18)->unique('cnpj');
+            $table->string('cnpj', 18);
+            $table->unique('cnpj', 'fornecedores_cnpj_unique');
             $table->string('cep', 9)->nullable();
             $table->string('contato')->nullable();
             $table->string('endereco')->nullable();
-            $table->timestamp('created_at')->nullable();;
+            $table->timestamp('created_at')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('fornecedores');

@@ -1,27 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class Supervisor2Controller extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware(['auth', 'role:Supervisor2']);
+    }
 
     public function index()
     {
-        return view('site.index');
-    }
+        $user = Auth::user();
 
-    public function sobre()
-    {
-        return view('site.sobre');
+        // Funcionário vê apenas seus próprios dados
+        return Inertia::render('Dashboard/Funcionario', [
+            'meus_dados' => $user
+        ]);
     }
-
-    public function contato()
-    {
-        return view('site.contato');
-    }
-
 }

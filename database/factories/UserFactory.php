@@ -1,42 +1,41 @@
 <?php
-
 namespace Database\Factories;
 
-
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
+
 class UserFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    protected $model = User::class;
-    public function definition(): array
-    {
-        return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'), // usando Helper do Laravel
-            'created_at' => now(),
-            'role' => 'user',
-            'remember_token' => Str::random(10),
+protected $model = User::class;
 
-        ];
-    }
-    public function unverified(): static
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
-        });
-    }
+public function definition(): array
+{
+return [
+    'name' => $this->faker->name(),
+    'email' => $this->faker->unique()->safeEmail(),
+    'email_verified_at' => now(),
+    'password' => bcrypt('password'),
+    'remember_token' => \Str::random(10),
+
+];
+}
+
+public function configure(): static
+{
+return $this->afterCreating(function (User $user) {
+// Pode randomizar uma role se quiser, ou fixar uma específica
+$role = Role::inRandomOrder()->first(); // aleatória entre as três
+$user->assignRole($role);
+});
+}
+
+public function unverified(): static
+{
+return $this->state(fn (array $attributes) => [
+'email_verified_at' => null,
+]);
+}
 }

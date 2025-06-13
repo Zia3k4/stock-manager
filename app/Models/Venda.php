@@ -12,13 +12,15 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Venda
- *
+ * 
  * @property int $id
  * @property Carbon $data_venda
  * @property string|null $nome_cliente
  * @property string|null $cpf_cliente
  * @property float $valor_total
- *
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * 
  * @property Collection|ItensVenda[] $itens_vendas
  *
  * @package App\Models
@@ -26,7 +28,6 @@ use Illuminate\Database\Eloquent\Model;
 class Venda extends Model
 {
 	protected $table = 'vendas';
-	public $timestamps = false;
 
 	protected $casts = [
 		'data_venda' => 'datetime',
@@ -44,12 +45,4 @@ class Venda extends Model
 	{
 		return $this->hasMany(ItensVenda::class);
 	}
-    public function getValorTotalAttribute($value)
-    { //revisar isto
-        return number_format($value, 2, ',', '.');
-    }
-    public function item()
-    {
-        return $this->hasMany(ItensVenda::class);
-    }
 }

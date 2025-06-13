@@ -2,46 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
+
+use App\Http\Requests\UserRequest;
 use Inertia\Inertia;
+use Illuminate\Http\RedirectResponse;
+use App\Services\UsuarioService;
 class UsuarioController extends Controller
-{
+{    protected UsuarioService $usuarioService;
+    public function __construct(UsuarioService $usuarioService){
+        $this->usuarioService = $usuarioService;
+    }
     public function index()
     {
 
        return Inertia::render('Usuarios/Index', [
-            'usuarios' => User::all(),
+            'users' => $this->usuarioService->getAll(),
         ]);
     }
     public function create()
     {
         return Inertia::render('Usuarios/Create');
     }
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         // Validação dos dados do usuário
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'requir ed|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'role' => 'nullable|string|max:255',
         ]);
-
-        // Criação do usuário
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        // Redireciona para a lista de usuários com uma mensagem de sucesso
+        $this->usuarioService->create($request->validated());
         return redirect()->route('usuarios.index')->with('success', 'Usuário criado com sucesso!');
     }
     public function show($id)
     {
         // Busca o usuário pelo ID e retorna uma view para exibir os detalhes
         return Inertia::render('Usuarios/Show', [
-            'usuario' => User::findOrFail($id),
+            'users' => $this->usuarioService->getById($id),
         ]);
     }
 
@@ -49,38 +47,27 @@ class UsuarioController extends Controller
     {
         // Busca o usuário pelo ID e retorna uma view para editar
     return Inertia::render('Usuarios/Edit', [
-            'usuario' => User::findOrFail($id),
+            'users' => $this->usuarioService->getById($id),
         ]);
     }
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         // Validação dos dados do usuário
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8|confirmed',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'role' => 'nullable|string|max:255',
         ]);
-
-        // Atualiza o usuário
-        $user = User::findOrFail($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
-        }
-        $user->save();
-
-        // Redireciona para a lista de usuários com uma mensagem de sucesso
+       $this ->usuarioService->update($id, $request->validated());
+        // Busca o usuário pelo ID e atualiza os dados
         return redirect()->route('usuarios.index')->with('success', 'Usuário atualizado com sucesso!');
     }
-    public function destroy($id)
+    public function destroy($id):RedirectResponse
     {
-        // Busca o usuário pelo ID e deleta
-        $user = User::findOrFail($id);
-        $user->delete();
-
-        // Redireciona para a lista de usuários com uma mensagem de sucesso
-        return redirect()->route('usuarios.index')->with('success', 'Usuário deletado com sucesso!');
+       $this->usuarioService->delete($id);
+        // Busca o usuário pelo ID e exclui
+        return redirect()->route('usuarios.index')->with('success', 'Usuário excluído com sucesso!');
     }
 
 

@@ -3,57 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EstoqueRequest;
-use App\Models\Estoque;
-use App\Models\Produto;
-use Inertia\Inertia;
+use App\Services\EstoqueService;
 use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
 class EstoqueController extends Controller
-{
+{  protected EstoqueService $estoqueService;
+    public function __construct(EstoqueService $estoqueService)
+    {
+    $this->estoqueService = $estoqueService;
+    }
     public function index()
     {
         return Inertia::render('Estoque/Index', [
-           'estoque' => Estoque::latest()->get(),
+           'estoque' => $this->estoqueService->getAll(),
         ]);
     }
     public function create()
     {
-        return Inertia::render('Estoque/Create', [
-            'produtos' => Produto::all(),
-           // criar uma tabela de estoque depois
-        ]);
+        return Inertia::render('Estoque/Create');
     }
-
      public function store(EstoqueRequest $request): RedirectResponse
 {
-     Estoque::create($request->validated());
-     return redirect()->route('estoque.index')->with('success', 'Movimentação de estoque registrada com sucesso!');
+    $this->estoqueService->create($request->validated());
+    return redirect()->route('estoque.index')->with('success', 'Movimentação de estoque criada com sucesso!');
 
 }
  public function show($id)
     {
         return Inertia::render('Estoque/Show', [
-            'estoque' => Estoque::findOrFail($id),
+            'estoque' => $this->estoqueService->getById($id),
         ]);
     }
 
     public function edit($id)
     {
         return Inertia::render('Estoque/Edit', [
-            'estoque' => Estoque::findOrFail($id),
+            'estoque' => $this->estoqueService->getById($id),
         ]);
     }
 
     public function update(EstoqueRequest $request, $id): RedirectResponse
     {
-        $estoque = Estoque::findOrFail($id);
-        $estoque->update($request->all());
+       $request->validate([
+           'id' => 'required|exists:estoques,id',
+           'descricao' => 'required|string|max:255',
+           'lote' => 'required|string|max:255',
+           'preco_unitario' => 'required|numeric|min:0',
+
+       ]);
+        $this->estoqueService->update($id, $request->validated());
         return redirect()->route('estoque.index')->with('success', 'Movimentação de estoque atualizada com sucesso!');
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
-        $estoque = Estoque::findOrFail($id);
-        $estoque->delete();
+        $this->estoqueService->delete($id);
         return redirect()->route('estoque.index')->with('success', 'Movimentação de estoque excluída com sucesso!');
     }
 

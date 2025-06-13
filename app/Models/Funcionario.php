@@ -8,11 +8,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Funcionario
- *
+ * 
  * @property int $id
  * @property string $nome
  * @property string $cpf
@@ -23,12 +22,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property float|null $salario
  * @property string $telefone
  * @property string $email
- *
- * @property Collection|registro_frequencia[] $registro_frequencia
+ * 
+ * @property Collection|HorasTrabalhada[] $horas_trabalhadas
+ * @property Collection|RegistroFrequencium[] $registro_frequencia
  *
  * @package App\Models
  */
-
 class Funcionario extends Model
 {
 	protected $table = 'funcionarios';
@@ -50,9 +49,13 @@ class Funcionario extends Model
 		'email'
 	];
 
-	public function registro_frequencia(): HasMany
-    {
-		return $this->hasMany(registro_frequencia::class);
+	public function horas_trabalhadas()
+	{
+		return $this->hasMany(HorasTrabalhada::class);
 	}
 
+	public function registro_frequencia()
+	{
+		return $this->hasMany(RegistroFrequencium::class);
+	}
 }

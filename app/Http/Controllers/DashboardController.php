@@ -1,19 +1,26 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use Inertia\Inertia;
-use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
-    /**
-     * Controller responsável pelo gerenciamento do dashboard.
-     * Inclui funcionalidades de exibição da página inicial do dashboard.
-     *
-     * @return \Inertia\Response
-     */
+    public function __construct()
+    {
+        $this->middleware(['auth', 'role:Gerente']);
+    }
+
     public function index()
     {
-        return Inertia::render('Dashboard');
-        
+        // Exemplo: gerente vê todos os dados
+        return Inertia::render('Dashboard/Gerente',[
+            'title' => 'Dashboard Gerente',
+            'description' => 'Bem-vindo ao painel do gerente. Aqui você pode gerenciar todos os aspectos do sistema.',
+            // Adicione mais dados conforme necessário
+        ])->with([
+            'success' => session('success'),
+            'error' => session('error'),
+        ]);
     }
 }
