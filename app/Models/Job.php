@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Job
- *
+ * 
  * @property int $id
  * @property string $queue
  * @property string $payload

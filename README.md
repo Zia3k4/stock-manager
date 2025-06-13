@@ -24,7 +24,7 @@
 - JavaScript
 - Laravel 12
 - Laravel Breeze
-- Spatie Laravel Permition
+- Spatie Laravel Permission
 - Inertia
 
 

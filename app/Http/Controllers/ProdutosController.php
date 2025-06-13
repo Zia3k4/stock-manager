@@ -1,17 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Produto;
 // use Laracasts\Flash\Flash;
 use Inertia\Inertia;
 use App\Http\Requests\ProdutosRequest;
-
+use App\Services\ProdutoService;
+use Illuminate\Http\RedirectResponse;
+//Controller refatorado para usar o Inertia.js e o Service Pattern
 class ProdutosController extends Controller
 {
+    protected ProdutoService $produtoService;
+    public function __construct(ProdutoService $produtoService)
+    {
+        $this->produtoService = $produtoService;
+    }
     public function index()
      {
        return Inertia::render('Produtos/Index', [
-            'produtos' => Produto::latest()->get(),
+            'produtos' =>$this->produtoService->getAll(),
         ]);
      }
      public function create()
@@ -21,43 +27,19 @@ class ProdutosController extends Controller
 
     public function store(ProdutosRequest $request)
     {
-        $request->validate([
-        'descricao' => 'required|string|max:255',
-        'preco' => 'required|numeric|min:0',
-        'qtd_disponivel' => 'required|integer|min:0',
-        'nota_fiscal' => 'required|string|max:255',
-        'fornecedor_id' => 'required|exists:fornecedores,id',
-    ]);
-
-    $produtos = new Produto();
-
-    $produtos->descricao = $request->descricao;
-    $produtos->preco = $request->preco;
-    $produtos->qtd_disponivel = $request->qtd_disponivel;
-    $produtos->nota_fiscal = $request->nota_fiscal;
-    $produtos->fornecedor_id = $request->fornecedor_id;
-
-    $produtos->save();
-
-    session()->flash('success', 'Produto criado com sucesso!');
-
-    return back();
+        $this->produtoService->create($request->validated());
+        return redirect()->route('produtos.index')->with('success', 'Produto criado com sucesso!');
     }
     public function show($id)
     {
         return Inertia::render('Produtos/Show', [
-            'produtos' => Produto::findOrFail($id),
-            // Supondo que você tenha um modelo Fornecedor
+            'produtos' => $this->produtoService->getById($id),
         ]);
     }
-    /**
-     * Exibe o formulário de edição de um produto.
-     */
    public function edit($id)
    {
        return Inertia::render('Produtos/Edit', [
-              'produtos' => Produto::findOrFail($id),
-               // Supondo que você tenha um modelo Fornecedor
+              'produtos' => $this->produtoService->getById($id),
         ]);
     }
     public function update(ProdutosRequest $request, $id)
@@ -68,19 +50,14 @@ class ProdutosController extends Controller
         'nota_fiscal' => 'required|string|max:255',
         'fornecedor_id' => 'required|exists:fornecedores,id',
     ]);
-        $produtos = Produto::findOrFail($id);
-        $produtos->update($request->all());
-
-        session()->flash('success', 'Produto atualizado com sucesso!');
-
-        return redirect()->route('produtos.index');
+        $this->produtoService->update($id, $request->validated());
+        return redirect()->route('produtos.index')->with('success', 'Produto atualizado com sucesso!');
     }
 
-    public function destroy(Produto $produtos)
+    public function destroy(Produto $produtos): RedirectResponse
     {
-        $produtos->delete();
-
-        return redirect()->route('products.index')->with('success', 'Produto removido!');
+        $this->produtoService->delete($produtos->id);
+        return redirect()->route('produtos.index')->with('success', 'Produto excluído com sucesso!');
     }
 
 }

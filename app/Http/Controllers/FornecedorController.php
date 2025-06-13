@@ -3,18 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FornecedoresRequest;
-use App\Models\Fornecedores;
 use Inertia\Inertia;
 use Illuminate\Http\RedirectResponse;
-//revisado 1
+use App\Services\FornecedorService;
+
+//controller refatorado para usar o Inertia.js e o Service Pattern
 class FornecedorController extends Controller
 {
+    protected FornecedorService $fornecedoresService;
+    public function __construct(FornecedorService $fornecedoresService)
+    {
+        $this->fornecedoresService = $fornecedoresService;
+    }
     public function index()
     {
         return Inertia::render('Fornecedores/Index', [
-            'fornecedores' => Fornecedores::all(),
-            'success' => session('success'),
-            'error' => session('error'),
+             'fornecedores' => $this->fornecedoresService->getAll(),
         ]);
     }
     public function create()
@@ -24,39 +28,21 @@ class FornecedorController extends Controller
 
     public function store(FornecedoresRequest $request)
     {
-        // Validação
-        $request->validate([
-        'nome' => 'required|string|max:255',
-        'cnpj' => 'required|string|max:18',
-        'endereco' => 'nullable|string|max:255',
-        'cep' => 'nullable|string|max:9',
-        'contato' => 'nullable|string|max:255',
-        ]);
-
-        $fornecedor = new Fornecedores();
-
-       $fornecedor->nome = $request->nome;
-       $fornecedor->cnpj = $request->cnpj;
-       $fornecedor->endereco = $request->endereco;
-       $fornecedor->cep = $request->cep;
-       $fornecedor->contato = $request->contato;
-
-
-        $fornecedor->save();
-        return redirect()->route('fornecedores.index')->with('success', 'Fornecedor cadastrado com sucesso!');
+        $this->fornecedoresService->create($request->validated());
+        return redirect()->route('Fornecedores.index')->with('success', 'Fornecedor criado com sucesso!');
     }
 
     public function show($id)
     {
      return Inertia::render('Fornecedores/Show', [
-            'fornecedor' => Fornecedores::findOrFail($id),
+            'fornecedor' => $this->fornecedoresService->getById($id),
         ]);
     }
 
     public function edit(int $id)
     {
       return Inertia::render('Fornecedores/Edit', [
-            'fornecedor' => Fornecedores::findOrFail($id),
+            'fornecedor' =>$this->fornecedoresService->getById($id),
         ]);
     }
       public function update(FornecedoresRequest $request, $id)
@@ -70,24 +56,13 @@ class FornecedorController extends Controller
         'contato' => 'nullable|string|max:255',
         ]);
 
-        $fornecedor = Fornecedores::findOrFail($id);
-        $fornecedor->nome = $request->nome;
-        $fornecedor->cnpj = $request->cnpj;
-        $fornecedor->endereco = $request->endereco;
-        $fornecedor->cep = $request->cep;
-        $fornecedor->contato = $request->contato;
-
-
-        $fornecedor->save();
-
-        return redirect()->route('fornecedores.index')->with('success', 'Fornecedor atualizado com sucesso!');
+        $this->fornecedoresService->update($id, $request->validated());
+        return redirect()->route('Fornecedores.index')->with('success', 'Fornecedor atualizado com sucesso!');
     }
     public function destroy($id):RedirectResponse
     {
-        $fornecedor = Fornecedores::findOrFail($id);
-        $fornecedor->delete();
-
-        return redirect()->route('fornecedores.index')->with('success', 'Fornecedor removido com sucesso!');
+        $this->fornecedoresService->delete($id);
+        return redirect()->route('Fornecedores.index')->with('success', 'Fornecedor excluído com sucesso!');
     }
 
 }

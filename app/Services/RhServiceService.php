@@ -1,29 +1,39 @@
 <?php
-//revisar
 namespace App\Services;
-
-use App\Models\Funcionario;
-use App\Models\Frequencia;
+use App\Repositories\RhServiceRepository;
 use App\Models\registro_frequencia;
-
+use Illuminate\Database\Eloquent\Collection;
 class RhServiceService
 {
-    //colocar no autoload depois o helper la
-    /**
-     * Calcula o salário total de um funcionário.
-     */
-    public function calcularSalario(int $funcionarioId): float
+    protected RhServiceRepository $rhServiceRepository;
+
+    public function __construct(RhServiceRepository $rhServiceRepository)
     {
-        $funcionario = Funcionario::findOrFail($funcionarioId);
-        $frequencia =registro_frequencia::where('funcionario_id', $funcionarioId)->get();
+        $this->rhServiceRepository = $rhServiceRepository;
+    }
 
-        $salarioBase = $funcionario->salario;
-        $horasExtras = $frequencia->sum('horas_extras');
-        $valorHora = $salarioBase / 160; // Exemplo: salário dividido por 160h/mês
+    public function getAll(): Collection
+    {
+        return $this->rhServiceRepository->all();
+    }
 
-        $total = $salarioBase + ($horasExtras * $valorHora);
+    public function getById($id): ?registro_frequencia
+    {
+        return $this->rhServiceRepository->find($id);
+    }
 
-        return round($total, 2);
+    public function create(array $data): registro_frequencia
+    {
+        return $this->rhServiceRepository->create($data);
+    }
+
+    public function update($id, array $data): ?registro_frequencia
+    {
+        return $this->rhServiceRepository->update($id, $data);
+    }
+
+    public function delete($id): bool
+    {
+        return $this->rhServiceRepository->delete($id);
     }
 }
-///revisar

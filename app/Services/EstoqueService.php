@@ -1,10 +1,11 @@
 <?php
 namespace App\Services;
+use App\Repositories\EstoqueRepository;
 use App\Models\Estoque;
-
+use Illuminate\Database\Eloquent\Collection;
 
 class EstoqueService {
-    protected $estoqueRepository;
+    protected EstoqueRepository $estoqueRepository;
 
     public function __construct(EstoqueRepository $estoqueRepository) {
         $this->estoqueRepository = $estoqueRepository;

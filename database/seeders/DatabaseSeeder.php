@@ -36,6 +36,8 @@ class DatabaseSeeder extends Seeder
         // Etapa 4: Usuários e permissões
         $this->call([
             UserSeeder::class,             // 4.1 Criação e roles
+            RoleSeeder::class,             // 4.2 Papéis
+            PermissionSeeder::class,       // 4.3 Permissões
         ]);
 
         // Etapa 5: Registro de frequência

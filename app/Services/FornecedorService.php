@@ -1,38 +1,34 @@
 <?php
 
-namespace\App\Services;
-use App\Models\Fornecedor;
+namespace App\Services;
+use App\Repositories\FornecedorRepository;
+use App\Models\Fornecedores;
+use Illuminate\Database\Eloquent\Collection;
 
-
-class FornecedorService {
-
-    public function getAllFornecedores() {
-        return Fornecedor::all();
+class FornecedorService{
+    protected FornecedorRepository $fornecedorRepository;
+    public function __construct(FornecedorRepository $fornecedorRepository){
+        $this->fornecedorRepository = $fornecedorRepository;
     }
-
-    public function getFornecedorById($id) {
-        return Fornecedor::find($id);
+    public function getAll(): Collection
+    {
+        return $this->fornecedorRepository->all();
     }
-
-    public function createFornecedor(array $data) {
-        return Fornecedor::create($data);
+    public function getById($id): ?Fornecedores
+    {
+        return $this->fornecedorRepository->find($id);
     }
-
-    public function updateFornecedor($id, array $data) {
-        $fornecedor = Fornecedor::find($id);
-        if ($fornecedor) {
-            $fornecedor->update($data);
-            return $fornecedor;
-        }
-        return null;
+    public function create(array $data)
+    {
+    return $this->fornecedorRepository->create($data);
     }
-
-    public function deleteFornecedor($id) {
-        $fornecedor = Fornecedor::find($id);
-        if ($fornecedor) {
-            $fornecedor->delete();
-            return true;
-        }
-        return false;
+    public function update($id, array $data)
+    {
+        return $this->fornecedorRepository->update($id, $data);
+    }
+    public function delete($id):bool
+    {
+        return $this->fornecedorRepository->delete($id);
     }
 }
+

@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+
 use App\Http\Requests\UserRequest;
 use Inertia\Inertia;
+use Illuminate\Http\RedirectResponse;
+use App\Services\UsuarioService;
 class UsuarioController extends Controller
-{
+{    protected UsuarioService $usuarioService;
+    public function __construct(UsuarioService $usuarioService){
+        $this->usuarioService = $usuarioService;
+    }
     public function index()
     {
 
        return Inertia::render('Usuarios/Index', [
-            'users' => User::all(),
+            'users' => $this->usuarioService->getAll(),
         ]);
     }
     public function create()
@@ -27,23 +32,14 @@ class UsuarioController extends Controller
             'password' => 'required|string|min:6',
             'role' => 'nullable|string|max:255',
         ]);
-
-        // Criação do usuário
-        User::create([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|string|min:6',
-        'role' => 'nullable|string|max:255',
-        ]);
-
-        // Redireciona para a lista de usuários com uma mensagem de sucesso
+        $this->usuarioService->create($request->validated());
         return redirect()->route('usuarios.index')->with('success', 'Usuário criado com sucesso!');
     }
     public function show($id)
     {
         // Busca o usuário pelo ID e retorna uma view para exibir os detalhes
         return Inertia::render('Usuarios/Show', [
-            'users' => User::findOrFail($id),
+            'users' => $this->usuarioService->getById($id),
         ]);
     }
 
@@ -51,7 +47,7 @@ class UsuarioController extends Controller
     {
         // Busca o usuário pelo ID e retorna uma view para editar
     return Inertia::render('Usuarios/Edit', [
-            'users' => User::findOrFail($id),
+            'users' => $this->usuarioService->getById($id),
         ]);
     }
     public function update(UserRequest $request, $id)
@@ -63,27 +59,15 @@ class UsuarioController extends Controller
             'password' => 'required|string|min:6',
             'role' => 'nullable|string|max:255',
         ]);
-
-        // Atualiza o usuário
-        $users = User::findOrFail($id);
-        $users->name = $request->name;
-        $users->email = $request->email;
-        if ($request->filled('password')) {
-            $users->password = bcrypt($request->password);
-        }
-        $users->save();
-
-        // Redireciona para a lista de usuários com uma mensagem de sucesso
+       $this ->usuarioService->update($id, $request->validated());
+        // Busca o usuário pelo ID e atualiza os dados
         return redirect()->route('usuarios.index')->with('success', 'Usuário atualizado com sucesso!');
     }
-    public function destroy($id)
+    public function destroy($id):RedirectResponse
     {
-        // Busca o usuário pelo ID e deleta
-        $users = User::findOrFail($id);
-        $users->delete();
-
-        // Redireciona para a lista de usuários com uma mensagem de sucesso
-        return redirect()->route('usuarios.index')->with('success', 'Usuário deletado com sucesso!');
+       $this->usuarioService->delete($id);
+        // Busca o usuário pelo ID e exclui
+        return redirect()->route('usuarios.index')->with('success', 'Usuário excluído com sucesso!');
     }
 
 

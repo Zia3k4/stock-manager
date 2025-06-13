@@ -1,41 +1,41 @@
 <?php
 
 namespace App\Services;
+use App\Repositories\FuncionarioRepository;
 use App\Models\Funcionario;
+use Illuminate\Database\Eloquent\Collection;
 
-class FuncionarioService {
-
-    protected $funcionarioRepository;
-
-    public function __construct(Funcionario $funcionarioRepository) {
+class FuncionarioService{
+    protected FuncionarioRepository $funcionarioRepository;
+    public function __construct(FuncionarioRepository $funcionarioRepository)
+    {
         $this->funcionarioRepository = $funcionarioRepository;
     }
 
-    public function getAllFuncionarios() {
+    public function getAll(): Collection
+    {
         return $this->funcionarioRepository->all();
     }
 
-    public function getFuncionarioById($id) {
+
+    public function getById($id): ?Funcionario
+    {
         return $this->funcionarioRepository->find($id);
     }
 
-    public function createFuncionario(array $data) {
+
+    public function create(array $data)
+    {
         return $this->funcionarioRepository->create($data);
     }
 
-    public function updateFuncionario($id, array $data) {
-        $funcionario = $this->getFuncionarioById($id);
-        if ($funcionario) {
-            return $funcionario->update($data);
-        }
-        return null;
+    public function update($id, array $data): ?Funcionario
+    {
+        return $this->funcionarioRepository->update($id, $data);
     }
 
-    public function deleteFuncionario($id) {
-        $funcionario = $this->getFuncionarioById($id);
-        if ($funcionario) {
-            return $funcionario->delete();
-        }
-        return null;
+    public function delete($id):bool
+    {
+        return $this->funcionarioRepository->delete($id);
     }
 }

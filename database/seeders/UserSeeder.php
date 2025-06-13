@@ -42,8 +42,8 @@ class UserSeeder extends Seeder
                     'remember_token' => null,
                 ]
             );
-
             $user->syncRoles([$data['role']]);
+
         }
     }
 

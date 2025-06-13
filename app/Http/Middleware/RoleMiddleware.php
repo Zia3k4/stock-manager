@@ -16,17 +16,17 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next)
     {
         // Verifica se o usuário autenticado tem o papel de 'admin'
-        if ($request->user() && $request->user()->hasRole('admin')) {
+        if ($request->user() && $request->user()->hasRole('Gerente')) {
             return $next($request);
         }
 
         // Verifica se o usuário autenticado tem o papel de 'supervisor1'
-        if ($request->user() && $request->user()->hasRole('supervisor1')) {
+        if ($request->user() && $request->user()->hasRole('Supervisor1')) {
             return $next($request);
         }
 
         // Verifica se o usuário autenticado tem o papel de 'supervisor2'
-        if ($request->user() && $request->user()->hasRole('supervisor2')) {
+        if ($request->user() && $request->user()->hasRole('Supervisor2')) {
             return $next($request);
         }
 

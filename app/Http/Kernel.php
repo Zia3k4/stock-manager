@@ -1,6 +1,12 @@
 <?php
 namespace App\Http;
+
 use App\Http\Middleware\RoleMiddleware;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
+use Illuminate\Routing\Middleware\ValidateSignature;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
+
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
@@ -8,6 +14,11 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Http\Middleware\HandleCors;
 
+use Illuminate\Http\Middleware\TrustProxies;
+use Illuminate\Http\Middleware\SetCacheHeaders;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Auth\Middleware\Authorize;
 class Kernel extends HttpKernel
 {
     /**
@@ -17,39 +28,23 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         HandleCors::class,
-        \App\Http\Middleware\TrustProxies::class,
-        \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        TrustProxies::class,
+        SetCacheHeaders::class,
         StartSession::class,
         ShareErrorsFromSession::class,
         SubstituteBindings::class,
     ];
 
-    /**
-     * The application's route middleware.
-     *
-     * @var array<class-string, class-string>
-     */
-    protected $routeMiddleware = [
-        'auth' => Authenticate::class,
-        'bindings' => SubstituteBindings::class,
-        'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'password.confirm' => \Illuminate\Auth\Middleware\EnsurePasswordIsConfirmed::class,
-        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'role' => RoleMiddleware::class, //
-         // Adicione esta linha
-         'gerente' => [
-         'auth',
-          'permission:dashboard.gerente'
-        ],
-         'supervisor1' => [
-          'auth',
-         'permission:dashboard.supervisor1'
-       ],
-         'supervisor2' => [
-         'auth',
-         'permission:dashboard.supervisor2'
-       ],
-    ];
+    //routemiddlewareGroups
+      protected $routeMiddleware = [
+          'auth' => Authenticate::class,
+          'bindings' => SubstituteBindings::class,
+          'can' => Authorize::class,
+          'guest'=>RedirectIfAuthenticated::class,
+          'password.confirm' => EnsureEmailIsVerified::class,
+          'signed'=>ValidateSignature::class,
+          'throttle' => ThrottleRequests::class,
+        // spatie
+
+ ];
 }
