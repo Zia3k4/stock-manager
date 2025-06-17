@@ -5,28 +5,17 @@
  */
 
 namespace App\Models;
-
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ItensVenda;
 
-/**
- * Class Venda
- * 
- * @property int $id
- * @property Carbon $data_venda
- * @property string|null $nome_cliente
- * @property string|null $cpf_cliente
- * @property float $valor_total
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * 
- * @property Collection|ItensVenda[] $itens_vendas
- *
- * @package App\Models
- */
 class Venda extends Model
 {
+    public function getAll()
+    {
+        return Venda::all();
+    }
 	protected $table = 'vendas';
 
 	protected $casts = [

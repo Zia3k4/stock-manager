@@ -6,6 +6,7 @@ use App\Models\Funcionario;
 use Illuminate\Database\Eloquent\Collection;
 
 class FuncionarioService{
+
     protected FuncionarioRepository $funcionarioRepository;
     public function __construct(FuncionarioRepository $funcionarioRepository)
     {

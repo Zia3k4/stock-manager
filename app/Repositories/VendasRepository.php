@@ -5,7 +5,7 @@ use App\Models\Venda;
 
 class VendasRepository{
     public function all(){
-        return Venda::latest()->get();
+        return Venda::latest()->getAll();
     }
     public function find($id): ?Venda
     {

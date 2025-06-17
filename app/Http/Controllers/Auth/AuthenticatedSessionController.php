@@ -32,8 +32,22 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        $user = Auth::user();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        if ($user->hasPermissionTo('dashboard.gerente')) {
+            return redirect()->route('dashboard.gerente.home');
+        }
+        if ($user->hasPermissionTo('dashboard.supervisor1')) {
+            return redirect()->route('dashboard.supervisor1.home');
+        }
+        if ($user->hasPermissionTo('dashboard.supervisor2')) {
+            return redirect()->route('dashboard.supervisor2.home');
+        }
+
+
+        // fallback se não tiver nenhuma permissão
+        Auth::logout();
+        return redirect('/')->withErrors(['Você não tem permissão para acessar nenhum painel.']);
     }
 
     /**
@@ -44,9 +58,16 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        // Limpa todos os cookies da resposta
+        $response = redirect('/login');
+        foreach ($request->cookies as $cookie => $value) {
+            $response->headers->setCookie(cookie()->forget($cookie));
+        }
+
+        return $response;
+
     }
 }
+/// resolver problema de redirecionamento para o painel correto após login, no destroy

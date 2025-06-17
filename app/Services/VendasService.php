@@ -8,7 +8,7 @@ class VendasService
     protected VendasRepository $vendasRepository;
     public function all(): Collection
     {
-        return $this->vendasRepository->all();
+        return $this->vendasRepository->getAll();
 
     }
 

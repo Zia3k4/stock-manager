@@ -124,5 +124,7 @@ return [
     ],
     //permission to use the database store for maintenance mode
 
+    App\Providers\RouteServiceProvider::class,
+
 
 ];
