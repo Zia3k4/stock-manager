@@ -4,10 +4,9 @@ namespace App\Http\Controllers\DashboardSupervisor1Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 class Supervisor1Controller extends Controller
-{//nao possui service paterns
+{
     public function __construct()
     {
         $this->middleware(['auth:sanctum', 'role:Supervisor1']);
@@ -18,10 +17,10 @@ class Supervisor1Controller extends Controller
         $user = Auth::user();
 
         // Exemplo: supervisor vê apenas dados da sua equipe/setor
-        return Inertia::render('Dashboard/Supervisor', [
-            'vendas' => $user->Vendas(), // Associe de acordo com sua relação
-            'estoque' => $user->Estoque(), // Associe de acordo com sua relação
-            'produtos' => $user->Produtos(), // Associe de acordo com sua relação
+        return view('supervisor1.dashboard', [
+            'vendas' => $user->Vendas(),
+            'estoque' => $user->Estoque(),
+            'produtos' => $user->Produtos(),
         ]);
     }
 }

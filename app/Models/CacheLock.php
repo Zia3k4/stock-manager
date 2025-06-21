@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CacheLock extends Model
 {
+    use CrudTrait;
 	protected $table = 'cache_locks';
 	protected $primaryKey = 'key';
 	public $incrementing = false;

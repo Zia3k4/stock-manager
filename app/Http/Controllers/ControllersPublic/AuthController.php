@@ -11,5 +11,4 @@ class AuthController extends Controller
         return Inertia::render('login/contrato');
     }
 
-
 }

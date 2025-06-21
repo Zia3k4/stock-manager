@@ -6,12 +6,13 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Funcionario
- * 
+ *
  * @property int $id
  * @property string $nome
  * @property string $cpf
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $salario
  * @property string $telefone
  * @property string $email
- * 
+ *
  * @property Collection|HorasTrabalhada[] $horas_trabalhadas
  * @property Collection|RegistroFrequencium[] $registro_frequencia
  *
@@ -30,13 +31,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Funcionario extends Model
 {
+    use CrudTrait;
 	protected $table = 'funcionarios';
 	public $timestamps = false;
 
 	protected $casts = [
 		'salario' => 'float'
 	];
-
 	protected $fillable = [
 		'nome',
 		'cpf',
@@ -48,7 +49,6 @@ class Funcionario extends Model
 		'telefone',
 		'email'
 	];
-
 	public function horas_trabalhadas()
 	{
 		return $this->hasMany(HorasTrabalhada::class);

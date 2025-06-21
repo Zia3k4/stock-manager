@@ -5,7 +5,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\VendasRequest;
 use App\Services\VendasService;
 use App\Models\Venda;
-use Inertia\Inertia;
 
 class VendasController extends Controller
 {
@@ -13,16 +12,17 @@ class VendasController extends Controller
     {
         $this->middleware(['auth:sanctum', 'role:Supervisor2']);
     }
+
     public function index()
     {
-        return Inertia::render('Supervisor2Page/vendas-index', [
-           'vendas'=> $this->vendasService->getAll(),
-            ]);
+        return view('supervisor2.vendas.index', [
+            'vendas' => $this->vendasService->getAll(),
+        ]);
     }
 
     public function create()
     {
-         return Inertia::render('Supervisor2Page/vendas-create');
+        return view('supervisor2.vendas.create');
     }
 
     public function store(VendasRequest $request)
@@ -36,20 +36,20 @@ class VendasController extends Controller
 
         Venda::create($request->all());
 
-        return redirect()->route('supervisor2.vendas.store')->with('success', 'Venda registrada com sucesso!');
+        return redirect()->route('supervisor2.vendas.index')->with('success', 'Venda registrada com sucesso!');
     }
 
     public function show(int $id)
     {
         $venda = Venda::findOrFail($id);
-        return Inertia::render('Supervisor2Page/vendas-show', [
-            'venda' => $venda,forneced
+        return view('supervisor2.vendas.show', [
+            'venda' => $venda,
         ]);
     }
 
     public function edit($id)
     {
-       return Inertia::render('Supervisor2Page/vendas-edit', [
+        return view('supervisor2.vendas.edit', [
             'venda' => Venda::findOrFail($id),
         ]);
     }
@@ -65,12 +65,12 @@ class VendasController extends Controller
         $venda = Venda::findOrFail($id);
         $venda->update($request->all());
 
-        return redirect()->route('supervisor2.vendas.update')->with('success', 'Venda atualizada com sucesso!');
+        return redirect()->route('supervisor2.vendas.index')->with('success', 'Venda atualizada com sucesso!');
     }
 
     public function destroy(int $id)
     {
         Venda::findOrFail($id)->delete();
-        return redirect()->route('supervisor2.vendas.destroy')->with('success', 'Venda excluída com sucesso!');
+        return redirect()->route('supervisor2.vendas.index')->with('success', 'Venda excluída com sucesso!');
     }
 }

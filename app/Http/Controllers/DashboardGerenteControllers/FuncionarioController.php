@@ -7,9 +7,6 @@ use App\Http\Requests\FuncionarioRequest;
 use App\Services\FuncionarioService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rule;
-use Inertia\Inertia;
-
-//  controller refatorado para usar o Inertia.js e o Service Pattern
 
 class FuncionarioController extends Controller
 {
@@ -20,33 +17,32 @@ class FuncionarioController extends Controller
 
     public function index()
     {
-
-        return Inertia::render('GerentePage/funcionarios-index', [
-        'funcionarios' => $this->service->getAll(),
-       ]);
-
+        return view('gerente.funcionarios-index', [
+            'funcionarios' => $this->service->getAll(),
+        ]);
     }
+
     public function create()
     {
-        return Inertia::render('GerentePage/funcionarios-create');
+        return view('gerente.funcionarios-create');
     }
+
     public function store(FuncionarioRequest $request): RedirectResponse
     {
         $this->service->create($request->validated());
         return redirect()->route('funcionarios.index')->with('success', 'Funcionário criado com sucesso!');
-
     }
 
     public function show(int $id)
     {
-        return Inertia::render('GerentePage/funcionarios-show', [
+        return view('gerente.funcionarios-show', [
             'funcionario' => $this->service->getById($id),
         ]);
     }
+
     public function edit(int $id)
     {
-
-        return Inertia::render('GerentePage/funcionarios-edit', [
+        return view('gerente.funcionarios-edit', [
             'funcionario' => $this->service->getById($id),
         ]);
     }
@@ -66,12 +62,12 @@ class FuncionarioController extends Controller
         ]);
 
         $this->service->update($id, $request->all());
-        return redirect()->route('gerente.funcionarios.update')->with('success', 'Funcionário atualizado com sucesso!');
+        return redirect()->route('funcionarios.index')->with('success', 'Funcionário atualizado com sucesso!');
     }
 
     public function destroy(int $id): RedirectResponse
     {
         $this->service->delete($id);
-        return redirect()->route('gerente.funcionarios.destroy')->with('success', 'Funcionário excluído com sucesso!');
+        return redirect()->route('funcionarios.index')->with('success', 'Funcionário excluído com sucesso!');
     }
 }

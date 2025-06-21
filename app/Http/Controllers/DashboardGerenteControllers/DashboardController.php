@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\DashboardGerenteControllers;
 
 use App\Http\Controllers\Controller;
-use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -14,12 +13,9 @@ class DashboardController extends Controller
 
     public function index()
     {
-        // Exemplo: gerente vê todos os dados
-        return Inertia::render('Dashboard/Gerente',[
+        return view('dashboard.gerente', [
             'title' => 'Dashboard Gerente',
             'description' => 'Bem-vindo ao painel do gerente. Aqui você pode gerenciar todos os aspectos do sistema.',
-            // Adicione mais dados conforme necessário
-        ])->with([
             'success' => session('success'),
             'error' => session('error'),
         ]);
