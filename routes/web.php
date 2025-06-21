@@ -19,7 +19,7 @@ Route::get('/dashboard', function () {
         'dashboard.gerente'      => 'dashboard.gerente.home',
         'dashboard.supervisor1'  => 'dashboard.supervisor1.home',
         'dashboard.supervisor2'  => 'dashboard.supervisor2.home',
-        // Adicione mais se quiser!
+        
     ];
 
     foreach ($painelRoutes as $permissao => $rota) {
