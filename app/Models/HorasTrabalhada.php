@@ -9,10 +9,10 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Funcionarios;
 /**
  * Class HorasTrabalhada
- * 
+ *
  * @property int $id
  * @property int $funcionario_id
  * @property Carbon $semana_inicio
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $total_horas
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Funcionario $funcionario
  *
  * @package App\Models
@@ -44,8 +44,8 @@ class HorasTrabalhada extends Model
 		'total_horas'
 	];
 
-	public function funcionario()
+	public function funcionario(): \Illuminate\Database\Eloquent\Relations\BelongsTo
 	{
-		return $this->belongsTo(Funcionario::class);
+		return $this->belongsTo(Funcionarios::class);
 	}
 }

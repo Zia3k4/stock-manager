@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Repositories;
-use app\Models\registro_frequencia;
+use App\Models\registro_frequencia;
 use Illuminate\Database\Eloquent\Collection;
 
 class  RhServiceRepository

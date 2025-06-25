@@ -10,13 +10,16 @@ return new class extends Migration
     {
      Schema::create('itens_venda', function (Blueprint $table) {
      $table->id();
-    $table->foreignId('venda_id')->constrained('vendas')->onDelete('cascade');
-    $table->foreignId('produto_id')->constrained('produtos')->onDelete('cascade');
-    $table->integer('quantidade');
-    $table->decimal('preco_unitario', 10, 2);
-    // Preço na hora da venda
-    $table->enum('status', ['vendido', 'cancelado'])->default('vendido');
-    $table->timestamps();
+         $table->unsignedBigInteger('venda_id');
+         $table->unsignedBigInteger('produto_id');
+         $table->integer('quantidade');
+         $table->decimal('preco_unitario', 10, 2);
+        // Preço na hora da venda
+         $table->enum('status', ['vendido', 'cancelado'])->default('vendido');
+         $table->foreign('venda_id')->references('id')->on('vendas');
+         $table->foreign('produto_id')->references('id')->on('produtos');
+
+         $table->timestamps();
      });
     }
      public function down(): void

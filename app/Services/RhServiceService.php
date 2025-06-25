@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Models\Funcionarios;
 use App\Repositories\RhServiceRepository;
 use App\Models\registro_frequencia;
 use Illuminate\Database\Eloquent\Collection;
@@ -35,5 +36,9 @@ class RhServiceService
     public function delete($id): bool
     {
         return $this->rhServiceRepository->delete($id);
+    }
+    public function funcionario(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Funcionarios::class);
     }
 }

@@ -10,22 +10,8 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-             //permissões gerais
-             'login',
-             'logout',
-             'cadastro',
-             'esqueceu_senha',
-             'recuperar_senha',
-             'ver_termos',
-             'aceitar_termos',
-             'ver_contrato',
-             'failed_login',
-             'fale_conosco',
 
              // Gerente
-             'dashboard.gerente',
-             'relatorios.ver',
-             'relatorios.exportar',
              'funcionarios.index',
              'funcionarios.create',
              'funcionarios.edit',
@@ -42,7 +28,6 @@ class PermissionSeeder extends Seeder
              'rhservice.edit',
 
              // Supervisor1
-             'dashboard.supervisor1',
              'fornecedores.index',
              'fornecedores.create',
              'fornecedores.edit',
@@ -50,7 +35,6 @@ class PermissionSeeder extends Seeder
              'fornecedores.show',
 
              // Supervisor2
-             'dashboard.supervisor2',
              'estoque.index',
              'estoque.create',
              'estoque.edit',
@@ -71,7 +55,7 @@ class PermissionSeeder extends Seeder
         foreach ($permissions as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
-                'guard_name' => 'web'
+                'guard_name' => 'backpack'
             ]);
         }
     }

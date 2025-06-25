@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "backpack/crud": "^6.8",
+        "backpack/permissionmanager": "^7.2",
         "backpack/theme-tabler": "^1.2",
         "guzzlehttp/guzzle": "^7.2",
         "laracasts/flash": "^3.2",
@@ -15,6 +16,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "maatwebsite/excel": "^3.1",
+        "phpoffice/phpspreadsheet": "*",
         "reliese/laravel": "^1.4",
         "spatie/laravel-permission": "^6.18",
         "tightenco/ziggy": "^2.0"

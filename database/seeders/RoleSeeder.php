@@ -9,14 +9,11 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
-        $gerente = Role::firstOrCreate(['name' => 'Gerente', 'guard_name' => 'web']);
-        $supervisor1 = Role::firstOrCreate(['name' => 'Supervisor1', 'guard_name' => 'web']);
-        $supervisor2 = Role::firstOrCreate(['name' => 'Supervisor2', 'guard_name' => 'web']);
+        $gerente = Role::firstOrCreate(['name' => 'Gerente', 'guard_name' => 'backpack']);
+        $supervisor1 = Role::firstOrCreate(['name' => 'Supervisor1', 'guard_name' => 'backpack']);
+        $supervisor2 = Role::firstOrCreate(['name' => 'Supervisor2', 'guard_name' => 'backpack']);
 
         $gerente->syncPermissions([
-             'dashboard.gerente',
-             'relatorios.ver',
-             'relatorios.exportar',
              'funcionarios.index', 'funcionarios.create', 'funcionarios.edit',
              'funcionarios.delete', 'funcionarios.show',
              'usuarios.index',
@@ -28,17 +25,36 @@ class RoleSeeder extends Seeder
              'rhservice.create',
              'rhservice.show',
              'rhservice.edit',
+            //
 
-
+            'fornecedores.index', 'fornecedores.create', 'fornecedores.edit', 'fornecedores.delete', 'fornecedores.show',
+             //
+            'estoque.index',
+            'estoque.create',
+            'estoque.edit',
+            'estoque.delete',
+            'estoque.show',
+            'vendas.index',
+            'vendas.create',
+            'vendas.edit',
+            'vendas.delete',
+            'vendas.show',
+            'produtos.index',
+            'produtos.create',
+            'produtos.edit',
+            'produtos.delete',
+            'produtos.show',
         ]);
 
         $supervisor1->syncPermissions([
-             'dashboard.supervisor1',
-             'fornecedores.index', 'fornecedores.create', 'fornecedores.edit', 'fornecedores.delete', 'fornecedores.show',
+             'fornecedores.index',
+            'fornecedores.create',
+            'fornecedores.edit',
+            'fornecedores.delete',
+            'fornecedores.show',
         ]);
 
         $supervisor2->syncPermissions([
-            'dashboard.supervisor2',
             'estoque.index',
             'estoque.create',
             'estoque.edit',

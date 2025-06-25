@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class ItensVenda
- * 
+ *
  * @property int $id
  * @property int $venda_id
  * @property int $produto_id
@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Produto $produto
  * @property Venda $venda
  *
@@ -47,13 +47,10 @@ class ItensVenda extends Model
 		'status'
 	];
 
-	public function produto()
+	public function produto(): \Illuminate\Database\Eloquent\Relations\BelongsTo
 	{
 		return $this->belongsTo(Produto::class);
 	}
 
-	public function venda()
-	{
-		return $this->belongsTo(Venda::class);
-	}
+
 }

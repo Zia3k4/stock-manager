@@ -19,7 +19,7 @@ class ProdutosRequest extends FormRequest
     {
         return [
         'descricao' => 'required|string|max:255',
-        'preco' => 'required|numeric|min:0',
+        'preco' => 'required|numeric|min:0|max:999999.99',
         'qtd_disponivel' => 'required|integer|min:0',
         'nota_fiscal' => 'required|string|max:255',
         'fornecedor_id' => 'required|exists:fornecedores,id',

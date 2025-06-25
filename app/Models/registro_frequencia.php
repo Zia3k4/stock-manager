@@ -38,7 +38,7 @@ class registro_frequencia extends Model
 		'hora_chegada' => 'datetime',
 		'hora_saida' => 'datetime',
 		'horas_trabalhadas' => 'float',
-		'atraso' => 'float',
+
 		'saida_antecipada' => 'float'
 	];
 
@@ -48,7 +48,7 @@ class registro_frequencia extends Model
 		'hora_chegada',
 		'hora_saida',
 		'horas_trabalhadas',
-		'atraso',
+        'chegou_atrasado',
 		'saida_antecipada',
 		'observacoes'
 	];

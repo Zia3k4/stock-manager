@@ -38,7 +38,7 @@ class RegistroFrequenciaSeeder extends Seeder
                     'hora_chegada' => $chegada->format('H:i:s'),
                     'hora_saida' => $saida->format('H:i:s'),
                     'horas_trabalhadas' => round($horas_trabalhadas, 2),
-                    'atraso' => round($atraso, 2),
+                    'chegou_atrasado' => 1,
                     'saida_antecipada' => round($saida_antecipada, 2),
                     'observacoes' => rand(0, 10) > 8 ? 'Chegou atrasado por motivo pessoal' : null,
                     'created_at' => now(),

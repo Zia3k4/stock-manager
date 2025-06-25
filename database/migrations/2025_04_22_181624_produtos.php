@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->id();
             $table->string('descricao');
-            $table->decimal('preco', 10);
+            $table->decimal('preco', 10, 2);
             $table->integer('qtd_disponivel');
             $table->string('nota_fiscal', 50)->nullable();
             $table->integer('fornecedor_id')->nullable()->index('fornecedor_id');

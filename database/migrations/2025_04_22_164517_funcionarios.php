@@ -20,12 +20,15 @@ return new class extends Migration
             $table->decimal('salario', 10)->nullable();
             $table->string('telefone', 13);
             $table->string('email');
+            $table->timestamps();
+
         });
     }
 
 
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('funcionarios');
+
     }
 };

@@ -10,7 +10,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = [
+        $users = [
             [
                 'name' => 'Gerente',
                 'email' => 'gerente@example.com',
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        foreach ($user as $data) {
+        foreach ($users as $data) {
             $user = User::updateOrCreate(
                 ['email' => $data['email']],
                 [
@@ -43,8 +43,7 @@ class UserSeeder extends Seeder
                 ]
             );
             $user->syncRoles([$data['role']]);
-
         }
-    }
 
+    }
 }

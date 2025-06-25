@@ -33,7 +33,7 @@ class Funcionario extends Model
 {
     use CrudTrait;
 	protected $table = 'funcionarios';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'salario' => 'float'
@@ -56,6 +56,6 @@ class Funcionario extends Model
 
 	public function registro_frequencia()
 	{
-		return $this->hasMany(RegistroFrequencium::class);
+		return $this->hasMany(RegistroFrequencia::class);
 	}
 }
