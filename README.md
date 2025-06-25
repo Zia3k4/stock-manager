@@ -1,161 +1,98 @@
-# Stock-Manager
-## obs :  Atualizar depois
- Gerenciamento de Estoque, API de administraçao e controle de estoque
+# Stock Manager
 
-## 📸 Demonstração (opcional)
+Sistema completo para gestão de estoque, vendas, funcionários e fornecedores, desenvolvido em **Laravel** com **Backpack** para administração.
 
+---
 
+## 📦 Funcionalidades
 
-## 🚀 Funcionalidades
+- Cadastro e controle de produtos e estoque
+- Registro e controle de vendas e itens vendidos
+- Gerenciamento de funcionários, frequência e horas trabalhadas
+- Cadastro de fornecedores
+- Controle de usuários, permissões e papéis (roles)
+- Validação de dados via Form Requests
+- Interface administrativa com Backpack
+- Exportação de dados (pdf)
+- Testes unitários em PHPUnit/Pest
+- Pronto para autenticação via Laravel Breeze ou Backpack
 
-- ✅ Cadastro de funcionários
-- ✅ Controle de estoque
-- ✅ Gerenciamento de fornecedores
-- ✅ Registro de frequência
-- ✅ Geração de relatórios
-- ✅ Autenticação por tipo de usuário (Gerente, Supervisores)
+---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Instalação
 
-- PHP (Laravel)
-- Mariadb
--PhpMyAdmin
-- HTML/CSS
-- JavaScript
-- Laravel 12
-- Laravel Breeze
-- Spatie Laravel Permission
-- Inertia
+### Pré-requisitos
 
+- PHP >= 8.2
+- Composer
+- Node.js & npm (opcional, para assets)
+- MySQL ou outro banco de dados compatível
 
-## ⚙️ Instalação
+### Passos
 
-## ⚙️ Instalação
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/Zia3k4/stock-manager.git
+   cd stock-manager
+   ```
 
-```bash
-git clone 'link do repositorio'
-cd nome-do-repo
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate
-php artisan serve
-composer require spatie/laravel-permission
-composer require breeze
-composer require laravel/breeze --dev
-php artisan breeze:install vue
+2. **Instale as dependências**
+   ```bash
+   composer install
+   ```
+
+3. **Configure o ambiente**
+   ```bash
+   cp .env.example .env
+   # Edite o .env com suas configurações de banco de dados
+   php artisan key:generate
+   ```
+
+4. **Execute as migrations e seeds**
+   ```bash
+   php artisan migrate --seed
+   ```
+
+5. **(Opcional) Instale dependências do frontend**
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+6. **Inicie o servidor**
+   ```bash
+   php artisan serve
+   ```
+
+---
+
+## 🧪 Testes
+
+- Testes unitários ficam em `tests/Unit/`
+- Para rodar os testes:
+  ```bash
+  php artisan test
+  # ou
+  vendor/bin/phpunit
+  ```
+
+---
+
+## 🗂️ Estrutura do Projeto
+
 ```
-## 👤 Perfis de Usuário
-Gerente: acesso total, relatórios, RH, estoque
-
-Supervisor 1: fornecedores
-
-Supervisor 2: produtos e estoque
-
-## Estrutura do Projeto
-
-  ### depois atualizar pq nao terminei ainda
- ```bash
-├── app
-│   ├── Http
-│   │   ├── Controllers
-│   │   ├── Kernel.php
-│   │   ├── Middleware
-│   │   └── Requests
-│   ├── Models
-│   │   ├── Estoque.php
-│   │   ├── Fornecedor.php
-│   │   ├── Frequencia.php
-│   │   ├── Funcionario.php
-│   │   ├── Produtos.php
-│   │   └── User.php
-│   ├── Policies
-│   │   ├── DashboardPolicy.php
-│   │   ├── EstoquePolicy.php
-│   │   ├── FornecedorPolicy.php
-│   │   ├── FuncionarioPolicy.php
-│   │   ├── ProdutoPolicy.php
-│   │   ├── RegistroPolicy.php
-│   │   └── RelatorioPolicy.php
-│   ├── Providers
-│   │   └── AppServiceProvider.php
-│   ├── Repositories
-│   │   ├── FuncionarioRepository.php
-│   │   ├── ProdutoRepository.php
-│   │   └── UsuarioRepository.php
-│   ├── Services
-│   │   ├── AuthService.php
-│   │   ├── BackupService.php
-│   │   ├── EstoqueService.php
-│   │   └── RhServiceService.php
-│   └── View
-│       └── Components
-├── artisan
-├── bootstrap
-│   ├── app.php
-│   └── cache
-│       ├── packages.php
-│       └── services.php
-├── composer.json
-├── composer.lock
-├── config
-│   ├── app.php
-│   ├── auth.php
-│   ├── cache.php
-│   ├── database.php
-│   ├── filesystems.php
-│   ├── hashing.php
-│   ├── logging.php
-│   ├── mail.php
-│   ├── permission.php
-│   ├── queue.php
-│   ├── services.php
-│   └── session.php
-├── database
-│   ├── database.sqlite
-│   ├── factories
-│   │   └── UserFactory.php
-│   ├── migrations
-│   │   └── [... arquivos de migração ...]
-│   └── seeders
-│       ├── DatabaseSeeder.php
-│       ├── FornecedoresSeeder.php
-│       ├── FuncionarioSeeder.php
-│       ├── ProdutoSeeder.php
-│       └── UsersSeeder.php
-├── jsconfig.json
-├── package.json
-├── package-lock.json
-├── phpunit.xml
-├── postcss.config.js
-├── public
-│   ├── build
-│   │   └── [... arquivos compilados ...]
-│   ├── favicon.ico
-│   ├── index.php
-│   └── robots.txt
-├── README.md
-├── resources
-│   ├── css
-│   │   └── app.css
-│   ├── js
-│   │   └── [... arquivos e componentes Vue/Inertia ...]
-│   └── views
-│       └── [... views Blade divididas por perfil e função ...]
-├── routes
-│   ├── auth.php
-│   ├── console.php
-│   └── web.php
-├── schemas
-│   └── schema.json
-├── storage
-│   └── [... estrutura de cache, sessões, logs ...]
-├── tailwind.config.js
-├── tests
-│   └── [... testes unitários e de feature ...]
-├── utils
-│   └── helpers.php
-├── vendor
-│   └── [... dependências instaladas pelo Composer ...]
-└── vite.config.js
+app/Models/           # Models Eloquent
+app/Http/Requests/    # Form Requests (validações)
+database/migrations/  # Migrations do banco
+tests/Unit/           # Testes unitários para Models e Requests
+public/               # Assets públicos
+resources/views/      # Views Blade/Backpack
 ```
+
+Principais pacotes usados:
+- **backpack/crud:** Painel administrativo robusto
+- **spatie/laravel-permission:** Controle de permissões/roles
+- **maatwebsite/excel:** Exportação de dados para Excel
+- **reliese/laravel:** Geração de models automatizada
+- **laravel/sanctum:** API tokens e autenticação SPA
+- **pestphp/pest:** Testes modernos (opcional)
