@@ -27,8 +27,7 @@ class ItemVendasSeeder extends Seeder
             }
             // Verifica se há vendas e produtos disponíveis
             DB::table('itens_venda')->insert([
-                'venda_id' => $faker->numberBetween(1, 10),
-                'produto_id' => $faker->numberBetween(1, 10),
+               'produto_id' => $faker->numberBetween(1, 10),
                 'quantidade' => $faker->numberBetween(1, 10),
                 'preco_unitario' => $faker->randomFloat(2, 5, 500),
                 'status' => $faker->randomElement(['vendido', 'cancelado']),

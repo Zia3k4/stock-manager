@@ -11,17 +11,16 @@ class EstoqueRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return backpack_auth()->check();
     }
     public function rules(): array
     {
         return [
-            'produto' => 'required|string|max:255',
-            'quantidade' => 'required|integer|min:0',
-            'preco_unitario' => 'required|numeric|min:0',
+            'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string|max:500',
-            'categoria' => 'nullable|string|max:255',
-            'codigo_barras' => 'nullable|string|max:20|unique:estoques,codigo_barras,' . $this->route('estoque'),
+            'lote' => 'required|integer|min:0',
+            'preco_unitario' => 'required|numeric|min:0',
+
         ];
     }
 }

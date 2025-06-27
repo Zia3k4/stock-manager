@@ -33,14 +33,12 @@ class ItensVenda extends Model
 	protected $table = 'itens_venda';
 
 	protected $casts = [
-		'venda_id' => 'int',
 		'produto_id' => 'int',
 		'quantidade' => 'int',
 		'preco_unitario' => 'float'
 	];
 
 	protected $fillable = [
-		'venda_id',
 		'produto_id',
 		'quantidade',
 		'preco_unitario',

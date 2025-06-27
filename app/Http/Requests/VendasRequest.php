@@ -10,7 +10,7 @@ class VendasRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return backpack_auth()->check();
     }
 
     /**

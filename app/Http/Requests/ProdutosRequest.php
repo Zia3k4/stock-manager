@@ -9,7 +9,7 @@ class ProdutosRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return backpack_auth()->check();
     }
     /**
      * Get the validation rules that apply to the request

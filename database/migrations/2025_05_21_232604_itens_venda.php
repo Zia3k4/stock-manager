@@ -10,7 +10,6 @@ return new class extends Migration
     {
      Schema::create('itens_venda', function (Blueprint $table) {
      $table->id();
-         $table->unsignedBigInteger('venda_id');
          $table->unsignedBigInteger('produto_id');
          $table->integer('quantidade');
          $table->decimal('preco_unitario', 10, 2);
